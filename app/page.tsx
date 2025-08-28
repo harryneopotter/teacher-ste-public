@@ -160,55 +160,55 @@ export default function Home() {
       </section>
 
       {/* Vision Section - Diagonal Layout */}
-      <section id="vision" className="py-20 bg-gradient-to-r from-purple-100 to-pink-100 relative">
-        <div className="absolute inset-0 bg-white transform -skew-y-2 origin-top-left"></div>
+      <section id="vision" className="py-20 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/20 dark:to-pink-900/20 relative transition-colors duration-300">
+        <div className="absolute inset-0 bg-white dark:bg-gray-900 transform -skew-y-2 origin-top-left transition-colors duration-300"></div>
         <div className="max-w-6xl mx-auto px-6 relative z-10">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center space-x-2 bg-purple-200 rounded-full px-6 py-3 mb-6">
-              <Sparkles className="w-5 h-5 text-purple-700" />
-              <span className="text-purple-800 font-semibold">Our Vision</span>
+            <div className="inline-flex items-center space-x-2 bg-purple-200 dark:bg-purple-800/50 rounded-full px-6 py-3 mb-6 transition-colors duration-300">
+              <Sparkles className="w-5 h-5 text-purple-700 dark:text-purple-300 transition-colors duration-300" />
+              <span className="text-purple-800 dark:text-purple-200 font-semibold transition-colors duration-300">Our Vision</span>
             </div>
-            <h2 className="text-5xl font-bold text-gray-800 mb-6">Building Confidence Through Creativity</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <h2 className="text-5xl font-bold text-gray-800 dark:text-gray-100 mb-6 transition-colors duration-300">Building Confidence Through Creativity</h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto transition-colors duration-300">
               This program is not just about writing; it&apos;s about building confidence, finding a voice, and celebrating creativity. 
               Students don&apos;t just learn the mechanics of writing; they discover the creativity, courage, and joy of expressing themselves.
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300">
               <CardHeader>
                 <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mb-4">
                   <PenTool className="w-6 h-6 text-white" />
                 </div>
-                <CardTitle className="text-gray-800">Creative Expression</CardTitle>
+                <CardTitle className="text-gray-800 dark:text-gray-100 transition-colors duration-300">Creative Expression</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">Explore poetry, stories, and scripts while experimenting with different voices and styles.</p>
+                <p className="text-gray-600 dark:text-gray-300 transition-colors duration-300">Explore poetry, stories, and scripts while experimenting with different voices and styles.</p>
               </CardContent>
             </Card>
 
-            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 transform translate-y-4">
+            <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform translate-y-4">
               <CardHeader>
                 <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center mb-4">
                   <Users className="w-6 h-6 text-white" />
                 </div>
-                <CardTitle className="text-gray-800">Collaborative Learning</CardTitle>
+                <CardTitle className="text-gray-800 dark:text-gray-100 transition-colors duration-300">Collaborative Learning</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">Share and showcase creative projects while building teamwork and peer feedback skills.</p>
+                <p className="text-gray-600 dark:text-gray-300 transition-colors duration-300">Share and showcase creative projects while building teamwork and peer feedback skills.</p>
               </CardContent>
             </Card>
 
-            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300">
               <CardHeader>
                 <div className="w-12 h-12 bg-gradient-to-br from-pink-500 to-orange-500 rounded-xl flex items-center justify-center mb-4">
                   <Heart className="w-6 h-6 text-white" />
                 </div>
-                <CardTitle className="text-gray-800">Confident Communication</CardTitle>
+                <CardTitle className="text-gray-800 dark:text-gray-100 transition-colors duration-300">Confident Communication</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">Develop strong writing & grammar skills while becoming confident communicators.</p>
+                <p className="text-gray-600 dark:text-gray-300 transition-colors duration-300">Develop strong writing & grammar skills while becoming confident communicators.</p>
               </CardContent>
             </Card>
           </div>
@@ -216,39 +216,39 @@ export default function Home() {
       </section>
 
       {/* Program Details - Zigzag Layout */}
-      <section id="program" className="py-20 bg-white">
+      <section id="program" className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-5xl font-bold text-gray-800 mb-6">Young Voices Creative Writing Program</h2>
-            <p className="text-xl text-gray-600">Unlock Your Imagination – Write, Create, Share!</p>
+            <h2 className="text-5xl font-bold text-gray-800 dark:text-gray-100 mb-6 transition-colors duration-300">Young Voices Creative Writing Program</h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300 transition-colors duration-300">Unlock Your Imagination – Write, Create, Share!</p>
           </div>
 
           <div className="space-y-20">
             {/* Program Feature 1 */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
-                <h3 className="text-3xl font-bold text-gray-800 mb-6">What We Do</h3>
+                <h3 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6 transition-colors duration-300">What We Do</h3>
                 <div className="space-y-4">
                   <div className="flex items-start space-x-4">
                     <div className="w-6 h-6 bg-purple-500 rounded-full flex-shrink-0 mt-1"></div>
-                    <p className="text-lg text-gray-700">Explore poetry, stories, and scripts</p>
+                    <p className="text-lg text-gray-700 dark:text-gray-300 transition-colors duration-300">Explore poetry, stories, and scripts</p>
                   </div>
                   <div className="flex items-start space-x-4">
                     <div className="w-6 h-6 bg-pink-500 rounded-full flex-shrink-0 mt-1"></div>
-                    <p className="text-lg text-gray-700">Experiment with different voices and styles</p>
+                    <p className="text-lg text-gray-700 dark:text-gray-300 transition-colors duration-300">Experiment with different voices and styles</p>
                   </div>
                   <div className="flex items-start space-x-4">
                     <div className="w-6 h-6 bg-indigo-500 rounded-full flex-shrink-0 mt-1"></div>
-                    <p className="text-lg text-gray-700">Share and showcase creative projects</p>
+                    <p className="text-lg text-gray-700 dark:text-gray-300 transition-colors duration-300">Share and showcase creative projects</p>
                   </div>
                 </div>
               </div>
               <div className="relative">
-                <div className="bg-gradient-to-br from-purple-200 to-pink-200 rounded-3xl p-8 transform rotate-2">
-                  <div className="bg-white rounded-2xl p-6 shadow-lg">
-                    <BookOpen className="w-16 h-16 text-purple-600 mb-4" />
-                    <h4 className="text-xl font-semibold text-gray-800 mb-2">Creative Exploration</h4>
-                    <p className="text-gray-600">Students dive deep into various forms of creative writing, discovering their unique voice.</p>
+                <div className="bg-gradient-to-br from-purple-200 to-pink-200 dark:from-purple-800/50 dark:to-pink-800/50 rounded-3xl p-8 transform rotate-2 transition-colors duration-300">
+                  <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg transition-colors duration-300">
+                    <BookOpen className="w-16 h-16 text-purple-600 dark:text-purple-400 mb-4 transition-colors duration-300" />
+                    <h4 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2 transition-colors duration-300">Creative Exploration</h4>
+                    <p className="text-gray-600 dark:text-gray-300 transition-colors duration-300">Students dive deep into various forms of creative writing, discovering their unique voice.</p>
                   </div>
                 </div>
               </div>
@@ -257,34 +257,34 @@ export default function Home() {
             {/* Program Feature 2 */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="lg:order-2">
-                <h3 className="text-3xl font-bold text-gray-800 mb-6">Program Details</h3>
-                <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-8">
+                <h3 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6 transition-colors duration-300">Program Details</h3>
+                <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-2xl p-8 transition-colors duration-300">
                   <div className="space-y-4">
                     <div className="flex items-center space-x-3">
                       <div className="w-3 h-3 bg-indigo-500 rounded-full"></div>
-                      <span className="text-gray-700 font-medium">Online Group Classes (Grades 4–7 only)</span>
+                      <span className="text-gray-700 dark:text-gray-300 font-medium transition-colors duration-300">Online Group Classes (Grades 4–7 only)</span>
                     </div>
                     <div className="flex items-center space-x-3">
                       <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-                      <span className="text-gray-700 font-medium">Two classes per week, 60 minutes each</span>
+                      <span className="text-gray-700 dark:text-gray-300 font-medium transition-colors duration-300">Two classes per week, 60 minutes each</span>
                     </div>
                     <div className="flex items-center space-x-3">
                       <div className="w-3 h-3 bg-pink-500 rounded-full"></div>
-                      <span className="text-gray-700 font-medium">Small batch size for personal attention</span>
+                      <span className="text-gray-700 dark:text-gray-300 font-medium transition-colors duration-300">Small batch size for personal attention</span>
                     </div>
                     <div className="flex items-center space-x-3">
                       <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
-                      <span className="text-gray-700 font-medium">Led by experienced English teacher</span>
+                      <span className="text-gray-700 dark:text-gray-300 font-medium transition-colors duration-300">Led by experienced English teacher</span>
                     </div>
                   </div>
                 </div>
               </div>
               <div className="lg:order-1 relative">
-                <div className="bg-gradient-to-br from-yellow-200 to-orange-200 rounded-3xl p-8 transform -rotate-2">
-                  <div className="bg-white rounded-2xl p-6 shadow-lg">
-                    <Users className="w-16 h-16 text-indigo-600 mb-4" />
-                    <h4 className="text-xl font-semibold text-gray-800 mb-2">Small Groups</h4>
-                    <p className="text-gray-600">Intimate class sizes ensure every student gets the attention they deserve.</p>
+                <div className="bg-gradient-to-br from-yellow-200 to-orange-200 dark:from-yellow-800/50 dark:to-orange-800/50 rounded-3xl p-8 transform -rotate-2 transition-colors duration-300">
+                  <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg transition-colors duration-300">
+                    <Users className="w-16 h-16 text-indigo-600 dark:text-indigo-400 mb-4 transition-colors duration-300" />
+                    <h4 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2 transition-colors duration-300">Small Groups</h4>
+                    <p className="text-gray-600 dark:text-gray-300 transition-colors duration-300">Intimate class sizes ensure every student gets the attention they deserve.</p>
                   </div>
                 </div>
               </div>
@@ -294,91 +294,91 @@ export default function Home() {
       </section>
 
       {/* Application Form - Floating Cards */}
-      <section id="apply" className="py-20 bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
+      <section id="apply" className="py-20 bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 dark:from-gray-800 dark:via-purple-900/10 dark:to-gray-800 transition-colors duration-300">
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center space-x-2 bg-purple-200 rounded-full px-6 py-3 mb-6">
-              <Sparkles className="w-5 h-5 text-purple-700" />
-              <span className="text-purple-800 font-semibold">Join Us</span>
+            <div className="inline-flex items-center space-x-2 bg-purple-200 dark:bg-purple-800/50 rounded-full px-6 py-3 mb-6 transition-colors duration-300">
+              <Sparkles className="w-5 h-5 text-purple-700 dark:text-purple-300 transition-colors duration-300" />
+              <span className="text-purple-800 dark:text-purple-200 font-semibold transition-colors duration-300">Join Us</span>
             </div>
-            <h2 className="text-5xl font-bold text-gray-800 mb-6">Apply for Classes</h2>
-            <p className="text-xl text-gray-600">Ready to unlock your child&apos;s creative potential? Apply now!</p>
+            <h2 className="text-5xl font-bold text-gray-800 dark:text-gray-100 mb-6 transition-colors duration-300">Apply for Classes</h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300 transition-colors duration-300">Ready to unlock your child&apos;s creative potential? Apply now!</p>
           </div>
 
-          <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-2xl">
+          <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-0 shadow-2xl transition-colors duration-300">
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl text-gray-800">Student Application Form</CardTitle>
-              <CardDescription className="text-gray-600">Fill out the form below and Tanya will contact you soon</CardDescription>
+              <CardTitle className="text-2xl text-gray-800 dark:text-gray-100 transition-colors duration-300">Student Application Form</CardTitle>
+              <CardDescription className="text-gray-600 dark:text-gray-300 transition-colors duration-300">Fill out the form below and Tanya will contact you soon</CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <Label htmlFor="name" className="text-gray-700 font-medium">Name of the Student *</Label>
+                    <Label htmlFor="name" className="text-gray-700 dark:text-gray-300 font-medium transition-colors duration-300">Name of the Student *</Label>
                     <Input
                       id="name"
                       placeholder="Your answer"
                       value={formData.name}
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
                       required
-                      className="border-purple-200 focus:border-purple-500"
+                      className="border-purple-200 dark:border-purple-600 focus:border-purple-500 dark:focus:border-purple-400 dark:bg-gray-700 dark:text-gray-100 transition-colors duration-300"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="grade" className="text-gray-700 font-medium">Grade *</Label>
+                    <Label htmlFor="grade" className="text-gray-700 dark:text-gray-300 font-medium transition-colors duration-300">Grade *</Label>
                     <Input
                       id="grade"
                       placeholder="Your answer"
                       value={formData.grade}
                       onChange={(e) => setFormData({...formData, grade: e.target.value})}
                       required
-                      className="border-purple-200 focus:border-purple-500"
+                      className="border-purple-200 dark:border-purple-600 focus:border-purple-500 dark:focus:border-purple-400 dark:bg-gray-700 dark:text-gray-100 transition-colors duration-300"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="phone" className="text-gray-700 font-medium">Phone number *</Label>
+                  <Label htmlFor="phone" className="text-gray-700 dark:text-gray-300 font-medium transition-colors duration-300">Phone number *</Label>
                   <Input
                     id="phone"
                     placeholder="Your answer"
                     value={formData.phone}
                     onChange={(e) => setFormData({...formData, phone: e.target.value})}
                     required
-                    className="border-purple-200 focus:border-purple-500"
+                    className="border-purple-200 dark:border-purple-600 focus:border-purple-500 dark:focus:border-purple-400 dark:bg-gray-700 dark:text-gray-100 transition-colors duration-300"
                   />
                 </div>
 
                 <div className="space-y-4">
-                  <Label className="text-gray-700 font-medium">Which program do you want to enroll in? *</Label>
+                  <Label className="text-gray-700 dark:text-gray-300 font-medium transition-colors duration-300">Which program do you want to enroll in? *</Label>
                   <RadioGroup
                     value={formData.program}
                     onValueChange={(value) => setFormData({...formData, program: value})}
                     className="space-y-3"
                   >
-                    <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-purple-50 transition-colors">
-                      <RadioGroupItem value="creative-writing" id="creative-writing" className="border-purple-300" />
-                      <Label htmlFor="creative-writing" className="text-gray-700 cursor-pointer">Creative Writing</Label>
+                    <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors">
+                      <RadioGroupItem value="creative-writing" id="creative-writing" className="border-purple-300 dark:border-purple-600" />
+                      <Label htmlFor="creative-writing" className="text-gray-700 dark:text-gray-300 cursor-pointer transition-colors duration-300">Creative Writing</Label>
                     </div>
-                    <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-purple-50 transition-colors">
-                      <RadioGroupItem value="spoken-english" id="spoken-english" className="border-purple-300" />
-                      <Label htmlFor="spoken-english" className="text-gray-700 cursor-pointer">Spoken English</Label>
+                    <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors">
+                      <RadioGroupItem value="spoken-english" id="spoken-english" className="border-purple-300 dark:border-purple-600" />
+                      <Label htmlFor="spoken-english" className="text-gray-700 dark:text-gray-300 cursor-pointer transition-colors duration-300">Spoken English</Label>
                     </div>
-                    <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-purple-50 transition-colors">
-                      <RadioGroupItem value="japanese" id="japanese" className="border-purple-300" />
-                      <Label htmlFor="japanese" className="text-gray-700 cursor-pointer">Japanese</Label>
+                    <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors">
+                      <RadioGroupItem value="japanese" id="japanese" className="border-purple-300 dark:border-purple-600" />
+                      <Label htmlFor="japanese" className="text-gray-700 dark:text-gray-300 cursor-pointer transition-colors duration-300">Japanese</Label>
                     </div>
                   </RadioGroup>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="comments" className="text-gray-700 font-medium">Comments</Label>
+                  <Label htmlFor="comments" className="text-gray-700 dark:text-gray-300 font-medium transition-colors duration-300">Comments</Label>
                   <Textarea
                     id="comments"
                     placeholder="Your answer"
                     value={formData.comments}
                     onChange={(e) => setFormData({...formData, comments: e.target.value})}
-                    className="border-purple-200 focus:border-purple-500 min-h-[100px]"
+                    className="border-purple-200 dark:border-purple-600 focus:border-purple-500 dark:focus:border-purple-400 dark:bg-gray-700 dark:text-gray-100 min-h-[100px] transition-colors duration-300"
                   />
                 </div>
 
