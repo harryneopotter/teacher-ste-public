@@ -7,7 +7,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { BookOpen, Heart, Sparkles, Users, PenTool, Star, Quote } from 'lucide-react'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { BookOpen, Heart, Sparkles, Users, PenTool, Star, Quote, FileText, Eye } from 'lucide-react'
+import Image from 'next/image'
 
 export default function Home() {
   const [formData, setFormData] = useState({
@@ -17,6 +19,7 @@ export default function Home() {
     program: '',
     comments: ''
   })
+  const [selectedPDF, setSelectedPDF] = useState<string | null>(null)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -27,22 +30,34 @@ export default function Home() {
 
   const studentWorks = [
     {
-      title: "The Magic Forest",
-      author: "Sarah, Grade 5",
-      type: "Short Story",
-      excerpt: "Once upon a time, in a forest where trees whispered secrets and flowers sang lullabies..."
+      id: 1,
+      title: "Fifilldi",
+      author: "Student Creative Work",
+      type: "Creative Writing Collection",
+      description: "A comprehensive creative writing collection showcasing imaginative storytelling and creative expression from one of our talented students.",
+      pdfUrl: "/pdfs/Fifilldi.pdf",
+      thumbnailUrl: "/thumbnails/fifilldi-thumb.jpg",
+      publishedDate: "August 2024"
     },
     {
-      title: "My Pet Dragon",
-      author: "Alex, Grade 4",
-      type: "Poem",
-      excerpt: "My dragon is purple with golden wings, He loves to dance and laugh and sing..."
+      id: 2,
+      title: "Navedh Poem Portfolio",
+      author: "Navedh",
+      type: "Poetry Collection",
+      description: "A beautiful collection of original poems exploring themes of nature, emotions, and imagination through the unique voice of young Navedh.",
+      pdfUrl: "/pdfs/Navedh poem portfolio.pdf",
+      thumbnailUrl: "/thumbnails/navedh-thumb.jpg",
+      publishedDate: "August 2024"
     },
     {
-      title: "The Time Machine Adventure",
-      author: "Maya, Grade 6",
-      type: "Adventure Story",
-      excerpt: "I never thought my grandmother's old clock would transport me to ancient Egypt..."
+      id: 3,
+      title: "Varenyam Poem Portfolio",
+      author: "Varenyam",
+      type: "Poetry Collection",
+      description: "An inspiring portfolio of poems that showcase Varenyam&apos;s growing confidence in creative expression and poetic voice.",
+      pdfUrl: "/pdfs/Varenyam poem portfolio.pdf",
+      thumbnailUrl: "/thumbnails/varenyam-thumb.jpg",
+      publishedDate: "August 2024"
     }
   ]
 
@@ -377,7 +392,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Student Showcase - Masonry Layout */}
+      {/* Student Showcase - PDF Gallery */}
       <section id="showcase" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
@@ -387,40 +402,125 @@ export default function Home() {
             </div>
             <h2 className="text-5xl font-bold text-gray-800 mb-6">Celebrating Young Voices</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              This website is also a gallery of student writing. Here, you&apos;ll find samples of poems, stories, and books written entirely by our students. 
-              Every piece is 100% original — authentic voices of children, celebrated and shared.
+              This gallery showcases the incredible creativity of our students. Each piece represents authentic voices of children, 
+              celebrating their unique perspectives and growing confidence in creative expression.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {studentWorks.map((work, index) => (
-              <Card key={index} className={`bg-gradient-to-br ${
-                index % 3 === 0 ? 'from-purple-100 to-pink-100' :
-                index % 3 === 1 ? 'from-blue-100 to-indigo-100' :
-                'from-yellow-100 to-orange-100'
-              } border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2`}>
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                      index % 3 === 0 ? 'bg-purple-200 text-purple-800' :
-                      index % 3 === 1 ? 'bg-blue-200 text-blue-800' :
-                      'bg-orange-200 text-orange-800'
-                    }`}>
-                      {work.type}
-                    </span>
-                    <BookOpen className={`w-5 h-5 ${
-                      index % 3 === 0 ? 'text-purple-600' :
-                      index % 3 === 1 ? 'text-blue-600' :
-                      'text-orange-600'
-                    }`} />
+              <Dialog key={work.id}>
+                <DialogTrigger asChild>
+                  <Card className={`cursor-pointer bg-gradient-to-br ${
+                    index % 3 === 0 ? 'from-purple-100 to-pink-100' :
+                    index % 3 === 1 ? 'from-blue-100 to-indigo-100' :
+                    'from-yellow-100 to-orange-100'
+                  } border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group`}>
+                    <CardHeader className="pb-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                          index % 3 === 0 ? 'bg-purple-200 text-purple-800' :
+                          index % 3 === 1 ? 'bg-blue-200 text-blue-800' :
+                          'bg-orange-200 text-orange-800'
+                        }`}>
+                          {work.type}
+                        </span>
+                        <div className="flex items-center space-x-1">
+                          <FileText className={`w-4 h-4 ${
+                            index % 3 === 0 ? 'text-purple-600' :
+                            index % 3 === 1 ? 'text-blue-600' :
+                            'text-orange-600'
+                          }`} />
+                          <Eye className={`w-4 h-4 ${
+                            index % 3 === 0 ? 'text-purple-600' :
+                            index % 3 === 1 ? 'text-blue-600' :
+                            'text-orange-600'
+                          } opacity-0 group-hover:opacity-100 transition-opacity`} />
+                        </div>
+                      </div>
+                      
+                      {/* PDF Thumbnail */}
+                      <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden bg-white shadow-md">
+                        <Image
+                          src={work.thumbnailUrl}
+                          alt={`${work.title} thumbnail`}
+                          fill
+                          className="object-cover transition-transform duration-300 group-hover:scale-105"
+                          onError={(e) => {
+                            // Fallback to a generic thumbnail if image fails to load
+                            const target = e.target as HTMLImageElement;
+                            target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQwIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDI0MCAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyNDAiIGhlaWdodD0iMTkyIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik05NiA3Nkg5NlY4MEg5MFY3NkM5MCA3My43OTA5IDkxLjc5MDkgNzIgOTQgNzJIOThWNzhaIiBmaWxsPSIjOUI5QkEyIi8+CjxwYXRoIGQ9Ik0xNDQgNzZIMTQ0VjgwSDE1MFY3NkMxNTAgNzMuNzkwOSAxNDguMjA5IDcyIDE0NiA3MkgxNDJWNzZaIiBmaWxsPSIjOUI5QkEyIi8+CjxwYXRoIGQ9Ik05NiAxMTZIOTZWMTEySTA0VjExNkM5MCAxMTguMjA5IDkxLjc5MDkgMTIwIDk0IDEyMEg5OFYxMTZaIiBmaWxsPSIjOUI5QkEyIi8+CjxwYXRoIGQ9Ik0xNDQgMTE2SDE0NFYxMTJIMTUwVjExNkMxNTAgMTE4LjIwOSAxNDguMjA5IDEyMCAxNDYgMTIwSDE0MlYxMTZaIiBmaWxsPSIjOUI5QkEyIi8+CjxyZWN0IHg9IjEwOCIgeT0iODgiIHdpZHRoPSIyNCIgaGVpZ2h0PSIxNiIgZmlsbD0iIzlCOUJBMiIvPgo8L3N2Zz4K';
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
+                          <div className="bg-white bg-opacity-90 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <Eye className="w-6 h-6 text-gray-700" />
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <CardTitle className="text-xl text-gray-800 line-clamp-2">{work.title}</CardTitle>
+                      <CardDescription className="text-gray-600 font-medium flex items-center justify-between">
+                        <span>by {work.author}</span>
+                        <span className="text-sm text-gray-500">{work.publishedDate}</span>
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-gray-700 leading-relaxed text-sm line-clamp-3">
+                        {work.description}
+                      </p>
+                      <div className="mt-4 flex items-center justify-between">
+                        <span className="text-sm text-purple-600 font-medium">Click to view PDF</span>
+                        <div className="flex items-center space-x-1 text-gray-500">
+                          <FileText className="w-4 h-4" />
+                          <span className="text-xs">PDF</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </DialogTrigger>
+                
+                <DialogContent className="max-w-6xl w-full h-[90vh] p-0">
+                  <DialogHeader className="p-6 pb-4 border-b">
+                    <DialogTitle className="text-2xl font-bold text-gray-800 flex items-center space-x-3">
+                      <FileText className="w-6 h-6 text-purple-600" />
+                      <div>
+                        <span>{work.title}</span>
+                        <p className="text-sm font-normal text-gray-600 mt-1">by {work.author} • {work.type}</p>
+                      </div>
+                    </DialogTitle>
+                  </DialogHeader>
+                  
+                  <div className="flex-1 p-6 pt-4">
+                    <div className="w-full h-full bg-gray-50 rounded-lg">
+                      <iframe
+                        src={work.pdfUrl}
+                        className="w-full h-full rounded-lg"
+                        title={`${work.title} by ${work.author}`}
+                        onError={() => {
+                          // Handle PDF loading error
+                          console.log('PDF failed to load:', work.pdfUrl);
+                        }}
+                      />
+                    </div>
                   </div>
-                  <CardTitle className="text-xl text-gray-800">{work.title}</CardTitle>
-                  <CardDescription className="text-gray-600 font-medium">by {work.author}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-700 italic leading-relaxed">&ldquo;{work.excerpt}&rdquo;</p>
-                </CardContent>
-              </Card>
+                  
+                  <div className="p-6 pt-0 border-t bg-gray-50">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-gray-600">{work.description}</p>
+                        <p className="text-xs text-gray-500 mt-1">Published: {work.publishedDate}</p>
+                      </div>
+                      <Button asChild className="bg-purple-600 hover:bg-purple-700">
+                        <a href={work.pdfUrl} target="_blank" rel="noopener noreferrer">
+                          <FileText className="w-4 h-4 mr-2" />
+                          Open in New Tab
+                        </a>
+                      </Button>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
             ))}
           </div>
 
