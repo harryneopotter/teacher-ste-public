@@ -10,6 +10,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { BookOpen, Heart, Sparkles, Users, PenTool, Star, Quote, FileText, Eye } from 'lucide-react'
 import Image from 'next/image'
+import { ThemeToggle } from '@/components/theme-toggle'
 
 export default function Home() {
   const [formData, setFormData] = useState({
@@ -62,15 +63,18 @@ export default function Home() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 dark:from-gray-900 dark:via-purple-900/20 dark:to-gray-900 transition-colors duration-300">
       {/* Floating Navigation */}
-      <nav className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 bg-white/80 backdrop-blur-md rounded-full px-8 py-3 shadow-lg border border-purple-100">
-        <div className="flex items-center space-x-8">
-          <a href="#about" className="text-purple-700 hover:text-purple-900 font-medium transition-colors">About</a>
-          <a href="#vision" className="text-purple-700 hover:text-purple-900 font-medium transition-colors">Vision</a>
-          <a href="#program" className="text-purple-700 hover:text-purple-900 font-medium transition-colors">Program</a>
-          <a href="#apply" className="text-purple-700 hover:text-purple-900 font-medium transition-colors">Apply</a>
-          <a href="#showcase" className="text-purple-700 hover:text-purple-900 font-medium transition-colors">Showcase</a>
+      <nav className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-full px-8 py-3 shadow-lg border border-purple-100 dark:border-purple-800">
+        <div className="flex items-center space-x-6">
+          <a href="#about" className="text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-100 font-medium transition-colors">About</a>
+          <a href="#vision" className="text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-100 font-medium transition-colors">Vision</a>
+          <a href="#program" className="text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-100 font-medium transition-colors">Program</a>
+          <a href="#apply" className="text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-100 font-medium transition-colors">Apply</a>
+          <a href="#showcase" className="text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-100 font-medium transition-colors">Showcase</a>
+          <div className="ml-2 pl-2 border-l border-purple-200 dark:border-purple-700">
+            <ThemeToggle />
+          </div>
         </div>
       </nav>
 
@@ -82,21 +86,21 @@ export default function Home() {
               <div className="relative">
                 <div className="absolute -top-4 -left-4 w-24 h-24 bg-yellow-200 rounded-full opacity-60"></div>
                 <div className="absolute top-8 right-8 w-16 h-16 bg-pink-200 rounded-full opacity-60"></div>
-                <h1 className="text-6xl lg:text-7xl font-bold text-gray-800 leading-tight relative z-10">
+                <h1 className="text-6xl lg:text-7xl font-bold text-gray-800 dark:text-gray-100 leading-tight relative z-10 transition-colors duration-300">
                   Every Child Has a 
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600"> Story</span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400"> Story</span>
                 </h1>
-                <p className="text-xl text-gray-600 mt-6 max-w-2xl">
+                <p className="text-xl text-gray-600 dark:text-gray-300 mt-6 max-w-2xl transition-colors duration-300">
                   Welcome to Tanya Kaushik&apos;s Creative Writing Program - where young minds discover the magic of words and the power of imagination.
                 </p>
               </div>
             </div>
             <div className="relative">
-              <div className="bg-gradient-to-br from-purple-200 to-pink-200 rounded-3xl p-8 transform rotate-3 hover:rotate-0 transition-transform duration-300">
-                <div className="bg-white rounded-2xl p-6 shadow-lg">
-                  <BookOpen className="w-12 h-12 text-purple-600 mb-4" />
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">Creative Writing Program</h3>
-                  <p className="text-gray-600">For Grades 4-7 • Ages 9-12</p>
+              <div className="bg-gradient-to-br from-purple-200 to-pink-200 dark:from-purple-800/50 dark:to-pink-800/50 rounded-3xl p-8 transform rotate-3 hover:rotate-0 transition-all duration-300">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg transition-colors duration-300">
+                  <BookOpen className="w-12 h-12 text-purple-600 dark:text-purple-400 mb-4 transition-colors duration-300" />
+                  <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2 transition-colors duration-300">Creative Writing Program</h3>
+                  <p className="text-gray-600 dark:text-gray-300 transition-colors duration-300">For Grades 4-7 • Ages 9-12</p>
                   <div className="mt-4 flex items-center space-x-2">
                     <Star className="w-4 h-4 text-yellow-500 fill-current" />
                     <Star className="w-4 h-4 text-yellow-500 fill-current" />
@@ -112,42 +116,42 @@ export default function Home() {
       </section>
 
       {/* About Tanya - Curved Section */}
-      <section id="about" className="py-20 bg-white relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 rounded-b-[100px]"></div>
+      <section id="about" className="py-20 bg-white dark:bg-gray-900 relative overflow-hidden transition-colors duration-300">
+        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 dark:from-gray-800 dark:via-purple-900/30 dark:to-gray-800 rounded-b-[100px] transition-colors duration-300"></div>
         <div className="max-w-6xl mx-auto px-6 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <div className="inline-flex items-center space-x-2 bg-purple-100 rounded-full px-4 py-2 mb-6">
-                <Heart className="w-4 h-4 text-purple-600" />
-                <span className="text-purple-700 font-medium">Meet Your Teacher</span>
+              <div className="inline-flex items-center space-x-2 bg-purple-100 dark:bg-purple-800/50 rounded-full px-4 py-2 mb-6 transition-colors duration-300">
+                <Heart className="w-4 h-4 text-purple-600 dark:text-purple-400 transition-colors duration-300" />
+                <span className="text-purple-700 dark:text-purple-300 font-medium transition-colors duration-300">Meet Your Teacher</span>
               </div>
-              <h2 className="text-4xl font-bold text-gray-800 mb-6">Tanya Kaushik</h2>
-              <p className="text-lg text-gray-600 mb-6">
+              <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-6 transition-colors duration-300">Tanya Kaushik</h2>
+              <p className="text-lg text-gray-600 dark:text-gray-300 mb-6 transition-colors duration-300">
                 An experienced English teacher passionate about nurturing young writers. I believe that every child has a unique voice waiting to be discovered through the magic of creative writing.
               </p>
               <div className="space-y-4">
                 <div className="flex items-center space-x-3">
                   <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                  <span className="text-gray-700">Specialized in Creative Writing for Children</span>
+                  <span className="text-gray-700 dark:text-gray-300 transition-colors duration-300">Specialized in Creative Writing for Children</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <div className="w-2 h-2 bg-pink-500 rounded-full"></div>
-                  <span className="text-gray-700">Focus on Building Confidence & Voice</span>
+                  <span className="text-gray-700 dark:text-gray-300 transition-colors duration-300">Focus on Building Confidence & Voice</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <div className="w-2 h-2 bg-indigo-500 rounded-full"></div>
-                  <span className="text-gray-700">Small Batch Teaching for Personal Attention</span>
+                  <span className="text-gray-700 dark:text-gray-300 transition-colors duration-300">Small Batch Teaching for Personal Attention</span>
                 </div>
               </div>
             </div>
             <div className="relative">
-              <div className="bg-gradient-to-br from-yellow-100 to-orange-100 rounded-3xl p-8 transform -rotate-2">
-                <div className="bg-white rounded-2xl p-6 shadow-lg">
-                  <Quote className="w-8 h-8 text-purple-600 mb-4" />
-                  <p className="text-gray-700 italic text-lg leading-relaxed">
+              <div className="bg-gradient-to-br from-yellow-100 to-orange-100 dark:from-yellow-800/30 dark:to-orange-800/30 rounded-3xl p-8 transform -rotate-2 transition-colors duration-300">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg transition-colors duration-300">
+                  <Quote className="w-8 h-8 text-purple-600 dark:text-purple-400 mb-4 transition-colors duration-300" />
+                  <p className="text-gray-700 dark:text-gray-300 italic text-lg leading-relaxed transition-colors duration-300">
                     &ldquo;Writing is not just about putting words on paper. It&apos;s about discovering who you are, what you think, and how you see the world.&rdquo;
                   </p>
-                  <p className="text-purple-600 font-semibold mt-4">- Tanya Kaushik</p>
+                  <p className="text-purple-600 dark:text-purple-400 font-semibold mt-4 transition-colors duration-300">- Tanya Kaushik</p>
                 </div>
               </div>
             </div>
