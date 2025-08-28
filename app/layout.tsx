@@ -11,6 +11,10 @@ export const metadata: Metadata = {
   title: "Tanya Kaushik - Creative Writing Teacher | Young Voices Program",
   description: "Join Tanya Kaushik's Creative Writing Program for Grades 4-7. Nurturing young writers through poetry, stories, and creative expression. Online group classes with personal attention.",
   keywords: "creative writing, English teacher, children writing, poetry, storytelling, grades 4-7, online classes, Tanya Kaushik",
+  icons: {
+    icon: { url: '/favicon.svg', type: 'image/svg+xml' },
+    shortcut: { url: '/favicon.svg' }
+  }
 };
 
 export default function RootLayout({
