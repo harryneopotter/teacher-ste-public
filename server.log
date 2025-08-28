@@ -1,0 +1,56 @@
+$ next dev --turbopack
+   ▲ Next.js 15.5.2 (Turbopack)
+   - Local:        http://localhost:3000
+   - Network:      http://169.254.0.21:3000
+
+ ✓ Starting...
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+
+ ✓ Ready in 2.4s
+ ○ Compiling / ...
+ ✓ Compiled / in 6.4s
+ ⨯ ./app/globals.css:4703:8
+Parsing CSS source code failed
+[0m [90m 4701 |[39m   }
+ [90m 4702 |[39m }
+[31m[1m>[22m[39m[90m 4703 |[39m [33m@[39m[36mimport[39m url([32m'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap'[39m)[33m;[39m
+ [90m      |[39m        [31m[1m^[22m[39m
+ [90m 4704 |[39m html {
+ [90m 4705 |[39m   scroll[33m-[39mbehavior[33m:[39m smooth[33m;[39m
+ [90m 4706 |[39m }[0m
+
+@import rules must precede all rules aside from @charset and @layer statements
+
+Import trace:
+  Client Component Browser:
+    ./app/globals.css [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 2.7s
+ GET / 500 in 9505ms
+ ⚠ Cross origin request detected from tanya-english-teacher.lindy.site to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+ ○ Compiling /favicon.ico ...
+ ✓ Compiled /favicon.ico in 613ms
+ GET /favicon.ico 500 in 704ms
+ ✓ Compiled in 325ms
+ ✓ Compiled / in 15ms
+ GET / 200 in 702ms
+ GET /favicon.ico?favicon.bf3c9292.ico 200 in 363ms
+ ✓ Compiled in 365ms
+ ✓ Compiled / in 60ms
+ GET / 200 in 225ms
+ GET / 200 in 505ms
+ GET /favicon.ico?favicon.bf3c9292.ico 200 in 272ms
+ GET / 200 in 219ms
+ GET /favicon.ico?favicon.bf3c9292.ico 200 in 291ms
+ GET / 200 in 4868ms
+ GET /favicon.ico?favicon.bf3c9292.ico 200 in 377ms
+ GET / 200 in 349ms
+ GET / 200 in 303ms
+ GET / 200 in 238ms
