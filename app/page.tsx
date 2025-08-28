@@ -72,7 +72,7 @@ export default function Home() {
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600"> Story</span>
                 </h1>
                 <p className="text-xl text-gray-600 mt-6 max-w-2xl">
-                  Welcome to Tanya Kaushik's Creative Writing Program - where young minds discover the magic of words and the power of imagination.
+                  Welcome to Tanya Kaushik&apos;s Creative Writing Program - where young minds discover the magic of words and the power of imagination.
                 </p>
               </div>
             </div>
@@ -130,7 +130,7 @@ export default function Home() {
                 <div className="bg-white rounded-2xl p-6 shadow-lg">
                   <Quote className="w-8 h-8 text-purple-600 mb-4" />
                   <p className="text-gray-700 italic text-lg leading-relaxed">
-                    "Writing is not just about putting words on paper. It's about discovering who you are, what you think, and how you see the world."
+                    &ldquo;Writing is not just about putting words on paper. It&apos;s about discovering who you are, what you think, and how you see the world.&rdquo;
                   </p>
                   <p className="text-purple-600 font-semibold mt-4">- Tanya Kaushik</p>
                 </div>
