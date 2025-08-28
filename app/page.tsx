@@ -20,7 +20,6 @@ export default function Home() {
     program: '',
     comments: ''
   })
-  const [selectedPDF, setSelectedPDF] = useState<string | null>(null)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -37,7 +36,7 @@ export default function Home() {
       type: "Creative Writing Collection",
       description: "A comprehensive creative writing collection showcasing imaginative storytelling and creative expression from one of our talented students.",
       pdfUrl: "/pdfs/Fifilldi.pdf",
-      thumbnailUrl: "/thumbnails/fifilldi-thumb.jpg",
+      thumbnailUrl: null, // Will use generated SVG thumbnail
       publishedDate: "August 2024"
     },
     {
@@ -47,7 +46,7 @@ export default function Home() {
       type: "Poetry Collection",
       description: "A beautiful collection of original poems exploring themes of nature, emotions, and imagination through the unique voice of young Navedh.",
       pdfUrl: "/pdfs/Navedh poem portfolio.pdf",
-      thumbnailUrl: "/thumbnails/navedh-thumb.jpg",
+      thumbnailUrl: null, // Will use generated SVG thumbnail
       publishedDate: "August 2024"
     },
     {
@@ -57,7 +56,7 @@ export default function Home() {
       type: "Poetry Collection",
       description: "An inspiring portfolio of poems that showcase Varenyam&apos;s growing confidence in creative expression and poetic voice.",
       pdfUrl: "/pdfs/Varenyam poem portfolio.pdf",
-      thumbnailUrl: "/thumbnails/varenyam-thumb.jpg",
+      thumbnailUrl: null, // Will use generated SVG thumbnail
       publishedDate: "August 2024"
     }
   ]
@@ -397,15 +396,15 @@ export default function Home() {
       </section>
 
       {/* Student Showcase - PDF Gallery */}
-      <section id="showcase" className="py-20 bg-white">
+      <section id="showcase" className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center space-x-2 bg-yellow-200 rounded-full px-6 py-3 mb-6">
-              <Star className="w-5 h-5 text-yellow-700" />
-              <span className="text-yellow-800 font-semibold">Student Showcase</span>
+            <div className="inline-flex items-center space-x-2 bg-yellow-200 dark:bg-yellow-800/50 rounded-full px-6 py-3 mb-6 transition-colors duration-300">
+              <Star className="w-5 h-5 text-yellow-700 dark:text-yellow-300 transition-colors duration-300" />
+              <span className="text-yellow-800 dark:text-yellow-200 font-semibold transition-colors duration-300">Student Showcase</span>
             </div>
-            <h2 className="text-5xl font-bold text-gray-800 mb-6">Celebrating Young Voices</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <h2 className="text-5xl font-bold text-gray-800 dark:text-gray-100 mb-6 transition-colors duration-300">Celebrating Young Voices</h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto transition-colors duration-300">
               This gallery showcases the incredible creativity of our students. Each piece represents authentic voices of children, 
               celebrating their unique perspectives and growing confidence in creative expression.
             </p>
@@ -416,66 +415,70 @@ export default function Home() {
               <Dialog key={work.id}>
                 <DialogTrigger asChild>
                   <Card className={`cursor-pointer bg-gradient-to-br ${
-                    index % 3 === 0 ? 'from-purple-100 to-pink-100' :
-                    index % 3 === 1 ? 'from-blue-100 to-indigo-100' :
-                    'from-yellow-100 to-orange-100'
+                    index % 3 === 0 ? 'from-purple-100 to-pink-100 dark:from-purple-800/50 dark:to-pink-800/50' :
+                    index % 3 === 1 ? 'from-blue-100 to-indigo-100 dark:from-blue-800/50 dark:to-indigo-800/50' :
+                    'from-yellow-100 to-orange-100 dark:from-yellow-800/50 dark:to-orange-800/50'
                   } border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group`}>
                     <CardHeader className="pb-4">
                       <div className="flex items-center justify-between mb-3">
                         <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                          index % 3 === 0 ? 'bg-purple-200 text-purple-800' :
-                          index % 3 === 1 ? 'bg-blue-200 text-blue-800' :
-                          'bg-orange-200 text-orange-800'
-                        }`}>
+                          index % 3 === 0 ? 'bg-purple-200 text-purple-800 dark:bg-purple-700 dark:text-purple-200' :
+                          index % 3 === 1 ? 'bg-blue-200 text-blue-800 dark:bg-blue-700 dark:text-blue-200' :
+                          'bg-orange-200 text-orange-800 dark:bg-orange-700 dark:text-orange-200'
+                        } transition-colors duration-300`}>
                           {work.type}
                         </span>
                         <div className="flex items-center space-x-1">
                           <FileText className={`w-4 h-4 ${
-                            index % 3 === 0 ? 'text-purple-600' :
-                            index % 3 === 1 ? 'text-blue-600' :
-                            'text-orange-600'
-                          }`} />
+                            index % 3 === 0 ? 'text-purple-600 dark:text-purple-400' :
+                            index % 3 === 1 ? 'text-blue-600 dark:text-blue-400' :
+                            'text-orange-600 dark:text-orange-400'
+                          } transition-colors duration-300`} />
                           <Eye className={`w-4 h-4 ${
-                            index % 3 === 0 ? 'text-purple-600' :
-                            index % 3 === 1 ? 'text-blue-600' :
-                            'text-orange-600'
-                          } opacity-0 group-hover:opacity-100 transition-opacity`} />
+                            index % 3 === 0 ? 'text-purple-600 dark:text-purple-400' :
+                            index % 3 === 1 ? 'text-blue-600 dark:text-blue-400' :
+                            'text-orange-600 dark:text-orange-400'
+                          } opacity-0 group-hover:opacity-100 transition-all duration-300`} />
                         </div>
                       </div>
                       
                       {/* PDF Thumbnail */}
-                      <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden bg-white shadow-md">
-                        <Image
-                          src={work.thumbnailUrl}
-                          alt={`${work.title} thumbnail`}
-                          fill
-                          className="object-cover transition-transform duration-300 group-hover:scale-105"
-                          onError={(e) => {
-                            // Fallback to a generic thumbnail if image fails to load
-                            const target = e.target as HTMLImageElement;
-                            target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQwIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDI0MCAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyNDAiIGhlaWdodD0iMTkyIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik05NiA3Nkg5NlY4MEg5MFY3NkM5MCA3My43OTA5IDkxLjc5MDkgNzIgOTQgNzJIOThWNzhaIiBmaWxsPSIjOUI5QkEyIi8+CjxwYXRoIGQ9Ik0xNDQgNzZIMTQ0VjgwSDE1MFY3NkMxNTAgNzMuNzkwOSAxNDguMjA5IDcyIDE0NiA3MkgxNDJWNzZaIiBmaWxsPSIjOUI5QkEyIi8+CjxwYXRoIGQ9Ik05NiAxMTZIOTZWMTEySTA0VjExNkM5MCAxMTguMjA5IDkxLjc5MDkgMTIwIDk0IDEyMEg5OFYxMTZaIiBmaWxsPSIjOUI5QkEyIi8+CjxwYXRoIGQ9Ik0xNDQgMTE2SDE0NFYxMTJIMTUwVjExNkMxNTAgMTE4LjIwOSAxNDguMjA5IDEyMCAxNDYgMTIwSDE0MlYxMTZaIiBmaWxsPSIjOUI5QkEyIi8+CjxyZWN0IHg9IjEwOCIgeT0iODgiIHdpZHRoPSIyNCIgaGVpZ2h0PSIxNiIgZmlsbD0iIzlCOUJBMiIvPgo8L3N2Zz4K';
-                          }}
-                        />
+                      <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden bg-white dark:bg-gray-700 shadow-md transition-colors duration-300">
+                        <div className="w-full h-full flex items-center justify-center">
+                          <div className={`w-full h-full flex flex-col items-center justify-center ${
+                            index % 3 === 0 ? 'bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30' :
+                            index % 3 === 1 ? 'bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30' :
+                            'bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/30 dark:to-orange-900/30'
+                          } transition-colors duration-300`}>
+                            <FileText className={`w-16 h-16 ${
+                              index % 3 === 0 ? 'text-purple-400 dark:text-purple-300' :
+                              index % 3 === 1 ? 'text-blue-400 dark:text-blue-300' :
+                              'text-orange-400 dark:text-orange-300'
+                            } mb-2 transition-colors duration-300`} />
+                            <p className="text-sm font-medium text-gray-600 dark:text-gray-300 transition-colors duration-300">PDF Document</p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">{work.type}</p>
+                          </div>
+                        </div>
                         <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
-                          <div className="bg-white bg-opacity-90 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <Eye className="w-6 h-6 text-gray-700" />
+                          <div className="bg-white dark:bg-gray-800 bg-opacity-90 dark:bg-opacity-90 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                            <Eye className="w-6 h-6 text-gray-700 dark:text-gray-300 transition-colors duration-300" />
                           </div>
                         </div>
                       </div>
                       
-                      <CardTitle className="text-xl text-gray-800 line-clamp-2">{work.title}</CardTitle>
-                      <CardDescription className="text-gray-600 font-medium flex items-center justify-between">
+                      <CardTitle className="text-xl text-gray-800 dark:text-gray-100 line-clamp-2 transition-colors duration-300">{work.title}</CardTitle>
+                      <CardDescription className="text-gray-600 dark:text-gray-300 font-medium flex items-center justify-between transition-colors duration-300">
                         <span>by {work.author}</span>
-                        <span className="text-sm text-gray-500">{work.publishedDate}</span>
+                        <span className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-300">{work.publishedDate}</span>
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-gray-700 leading-relaxed text-sm line-clamp-3">
+                      <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-sm line-clamp-3 transition-colors duration-300">
                         {work.description}
                       </p>
                       <div className="mt-4 flex items-center justify-between">
-                        <span className="text-sm text-purple-600 font-medium">Click to view PDF</span>
-                        <div className="flex items-center space-x-1 text-gray-500">
+                        <span className="text-sm text-purple-600 dark:text-purple-400 font-medium transition-colors duration-300">Click to view PDF</span>
+                        <div className="flex items-center space-x-1 text-gray-500 dark:text-gray-400 transition-colors duration-300">
                           <FileText className="w-4 h-4" />
                           <span className="text-xs">PDF</span>
                         </div>
@@ -484,38 +487,47 @@ export default function Home() {
                   </Card>
                 </DialogTrigger>
                 
-                <DialogContent className="max-w-6xl w-full h-[90vh] p-0">
-                  <DialogHeader className="p-6 pb-4 border-b">
-                    <DialogTitle className="text-2xl font-bold text-gray-800 flex items-center space-x-3">
-                      <FileText className="w-6 h-6 text-purple-600" />
-                      <div>
-                        <span>{work.title}</span>
-                        <p className="text-sm font-normal text-gray-600 mt-1">by {work.author} • {work.type}</p>
-                      </div>
+                <DialogContent className="max-w-6xl w-full h-[90vh] p-6 dark:bg-gray-800 transition-colors duration-300">
+                  <DialogHeader className="pb-4">
+                    <DialogTitle className="text-xl font-semibold text-gray-800 dark:text-gray-100">
+                      {work.title} - by {work.author}
                     </DialogTitle>
                   </DialogHeader>
                   
-                  <div className="flex-1 p-6 pt-4">
-                    <div className="w-full h-full bg-gray-50 rounded-lg">
-                      <iframe
-                        src={work.pdfUrl}
-                        className="w-full h-full rounded-lg"
-                        title={`${work.title} by ${work.author}`}
-                        onError={() => {
-                          // Handle PDF loading error
-                          console.log('PDF failed to load:', work.pdfUrl);
-                        }}
-                      />
-                    </div>
+                  {/* PDF Viewer */}
+                  <div className="flex-1 h-full bg-white dark:bg-gray-900 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+                    <iframe
+                      src={work.pdfUrl}
+                      className="w-full h-full"
+                      title={`${work.title} by ${work.author}`}
+                      style={{ minHeight: '600px' }}
+                    >
+                      <p className="p-4 text-center text-gray-600 dark:text-gray-300">
+                        Your browser doesn't support PDF viewing. 
+                        <a 
+                          href={work.pdfUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-purple-600 hover:text-purple-700 underline ml-1"
+                        >
+                          Click here to download and view the PDF.
+                        </a>
+                      </p>
+                    </iframe>
                   </div>
                   
-                  <div className="p-6 pt-0 border-t bg-gray-50">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-gray-600">{work.description}</p>
-                        <p className="text-xs text-gray-500 mt-1">Published: {work.publishedDate}</p>
+                  {/* Footer with description and external link */}
+                  <div className="mt-4 p-4 border-t dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 transition-colors duration-300 rounded-lg">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div className="flex-1">
+                        <p className="text-sm text-gray-600 dark:text-gray-300 transition-colors duration-300 mb-1">
+                          {work.description}
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">
+                          Published: {work.publishedDate} • {work.type}
+                        </p>
                       </div>
-                      <Button asChild className="bg-purple-600 hover:bg-purple-700">
+                      <Button asChild className="bg-purple-600 hover:bg-purple-700 shrink-0">
                         <a href={work.pdfUrl} target="_blank" rel="noopener noreferrer">
                           <FileText className="w-4 h-4 mr-2" />
                           Open in New Tab
@@ -529,7 +541,7 @@ export default function Home() {
           </div>
 
           <div className="text-center mt-12">
-            <p className="text-lg text-gray-600 mb-6">Want to see your child&apos;s work featured here?</p>
+            <p className="text-lg text-gray-600 dark:text-gray-300 mb-6 transition-colors duration-300">Want to see your child&apos;s work featured here?</p>
             <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-full text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300">
               <a href="#apply">Join Our Program</a>
             </Button>
@@ -538,26 +550,26 @@ export default function Home() {
       </section>
 
       {/* Footer - Wave Design */}
-      <footer className="bg-gradient-to-r from-purple-600 to-pink-600 text-white relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-16 bg-white rounded-b-[100px]"></div>
+      <footer className="bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-800 dark:to-pink-800 text-white relative overflow-hidden transition-colors duration-300">
+        <div className="absolute top-0 left-0 w-full h-16 bg-white dark:bg-gray-900 rounded-b-[100px] transition-colors duration-300"></div>
         <div className="max-w-6xl mx-auto px-6 py-16 relative z-10">
           <div className="text-center">
-            <h3 className="text-3xl font-bold mb-4">Ready to Begin Your Writing Journey?</h3>
-            <p className="text-xl text-purple-100 mb-8">
+            <h3 className="text-3xl font-bold mb-4 text-white">Ready to Begin Your Writing Journey?</h3>
+            <p className="text-xl text-purple-100 dark:text-purple-200 mb-8 transition-colors duration-300">
               Contact Tanya Kaushik today and help your child discover the joy of creative writing.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-8">
               <div className="flex items-center space-x-2">
-                <Heart className="w-5 h-5 text-pink-300" />
-                <span className="text-purple-100">Nurturing Young Writers</span>
+                <Heart className="w-5 h-5 text-pink-300 dark:text-pink-200 transition-colors duration-300" />
+                <span className="text-purple-100 dark:text-purple-200 transition-colors duration-300">Nurturing Young Writers</span>
               </div>
               <div className="flex items-center space-x-2">
-                <Users className="w-5 h-5 text-pink-300" />
-                <span className="text-purple-100">Small Batch Classes</span>
+                <Users className="w-5 h-5 text-pink-300 dark:text-pink-200 transition-colors duration-300" />
+                <span className="text-purple-100 dark:text-purple-200 transition-colors duration-300">Small Batch Classes</span>
               </div>
               <div className="flex items-center space-x-2">
-                <Sparkles className="w-5 h-5 text-pink-300" />
-                <span className="text-purple-100">Creative Expression</span>
+                <Sparkles className="w-5 h-5 text-pink-300 dark:text-pink-200 transition-colors duration-300" />
+                <span className="text-purple-100 dark:text-purple-200 transition-colors duration-300">Creative Expression</span>
               </div>
             </div>
           </div>
