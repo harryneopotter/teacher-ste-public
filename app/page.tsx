@@ -151,8 +151,8 @@ export default function Home() {
             </div>
             <h2 className="text-5xl font-bold text-gray-800 mb-6">Building Confidence Through Creativity</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              This program is not just about writing; it's about building confidence, finding a voice, and celebrating creativity. 
-              Students don't just learn the mechanics of writing; they discover the creativity, courage, and joy of expressing themselves.
+              This program is not just about writing; it&apos;s about building confidence, finding a voice, and celebrating creativity. 
+              Students don&apos;t just learn the mechanics of writing; they discover the creativity, courage, and joy of expressing themselves.
             </p>
           </div>
           
@@ -283,7 +283,7 @@ export default function Home() {
               <span className="text-purple-800 font-semibold">Join Us</span>
             </div>
             <h2 className="text-5xl font-bold text-gray-800 mb-6">Apply for Classes</h2>
-            <p className="text-xl text-gray-600">Ready to unlock your child's creative potential? Apply now!</p>
+            <p className="text-xl text-gray-600">Ready to unlock your child&apos;s creative potential? Apply now!</p>
           </div>
 
           <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-2xl">
@@ -387,7 +387,7 @@ export default function Home() {
             </div>
             <h2 className="text-5xl font-bold text-gray-800 mb-6">Celebrating Young Voices</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              This website is also a gallery of student writing. Here, you'll find samples of poems, stories, and books written entirely by our students. 
+              This website is also a gallery of student writing. Here, you&apos;ll find samples of poems, stories, and books written entirely by our students. 
               Every piece is 100% original — authentic voices of children, celebrated and shared.
             </p>
           </div>
@@ -418,14 +418,14 @@ export default function Home() {
                   <CardDescription className="text-gray-600 font-medium">by {work.author}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-700 italic leading-relaxed">"{work.excerpt}"</p>
+                  <p className="text-gray-700 italic leading-relaxed">&ldquo;{work.excerpt}&rdquo;</p>
                 </CardContent>
               </Card>
             ))}
           </div>
 
           <div className="text-center mt-12">
-            <p className="text-lg text-gray-600 mb-6">Want to see your child's work featured here?</p>
+            <p className="text-lg text-gray-600 mb-6">Want to see your child&apos;s work featured here?</p>
             <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-full text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300">
               <a href="#apply">Join Our Program</a>
             </Button>
