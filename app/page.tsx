@@ -9,7 +9,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { BookOpen, Heart, Sparkles, Users, PenTool, Star, Quote, FileText, Eye } from 'lucide-react'
-import Image from 'next/image'
 import { ThemeToggle } from '@/components/theme-toggle'
 
 export default function Home() {
@@ -503,7 +502,7 @@ export default function Home() {
                       style={{ minHeight: '600px' }}
                     >
                       <p className="p-4 text-center text-gray-600 dark:text-gray-300">
-                        Your browser doesn't support PDF viewing. 
+                        Your browser doesn&apos;t support PDF viewing.
                         <a 
                           href={work.pdfUrl} 
                           target="_blank" 
