@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { BookOpen, Heart, Sparkles, Users, PenTool, Star, Quote, FileText, Eye } from 'lucide-react'
+import Image from 'next/image'
 import { ThemeToggle } from '@/components/theme-toggle'
 
 export default function Home() {
@@ -35,7 +36,7 @@ export default function Home() {
       type: "Creative Writing Collection",
       description: "A comprehensive creative writing collection showcasing imaginative storytelling and creative expression from one of our talented students.",
       pdfUrl: "/pdfs/Fifilldi.pdf",
-      thumbnailUrl: null, // Will use generated SVG thumbnail
+      thumbnailUrl: null, // Will use FileText icon fallback
       publishedDate: "August 2024"
     },
     {
@@ -45,7 +46,7 @@ export default function Home() {
       type: "Poetry Collection",
       description: "A beautiful collection of original poems exploring themes of nature, emotions, and imagination through the unique voice of young Navedh.",
       pdfUrl: "/pdfs/Navedh poem portfolio.pdf",
-      thumbnailUrl: null, // Will use generated SVG thumbnail
+      thumbnailUrl: null, // Will use FileText icon fallback
       publishedDate: "August 2024"
     },
     {
@@ -55,7 +56,7 @@ export default function Home() {
       type: "Poetry Collection",
       description: "An inspiring portfolio of poems that showcase Varenyam&apos;s growing confidence in creative expression and poetic voice.",
       pdfUrl: "/pdfs/Varenyam poem portfolio.pdf",
-      thumbnailUrl: null, // Will use generated SVG thumbnail
+      thumbnailUrl: null, // Will use FileText icon fallback
       publishedDate: "August 2024"
     }
   ]
@@ -441,23 +442,33 @@ export default function Home() {
                         </div>
                       </div>
                       
-                      {/* PDF Thumbnail */}
+      {/* PDF Thumbnail */}
                       <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden bg-white dark:bg-gray-700 shadow-md transition-colors duration-300">
-                        <div className="w-full h-full flex items-center justify-center">
-                          <div className={`w-full h-full flex flex-col items-center justify-center ${
-                            index % 3 === 0 ? 'bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30' :
-                            index % 3 === 1 ? 'bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30' :
-                            'bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/30 dark:to-orange-900/30'
-                          } transition-colors duration-300`}>
-                            <FileText className={`w-16 h-16 ${
-                              index % 3 === 0 ? 'text-purple-400 dark:text-purple-300' :
-                              index % 3 === 1 ? 'text-blue-400 dark:text-blue-300' :
-                              'text-orange-400 dark:text-orange-300'
-                            } mb-2 transition-colors duration-300`} />
-                            <p className="text-sm font-medium text-gray-600 dark:text-gray-300 transition-colors duration-300">PDF Document</p>
-                            <p className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">{work.type}</p>
+                        {work.thumbnailUrl ? (
+                          <Image
+                            src={work.thumbnailUrl}
+                            alt={`${work.title} thumbnail`}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <div className={`w-full h-full flex flex-col items-center justify-center ${
+                              index % 3 === 0 ? 'bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30' :
+                              index % 3 === 1 ? 'bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30' :
+                              'bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/30 dark:to-orange-900/30'
+                            } transition-colors duration-300`}>
+                              <FileText className={`w-16 h-16 ${
+                                index % 3 === 0 ? 'text-purple-400 dark:text-purple-300' :
+                                index % 3 === 1 ? 'text-blue-400 dark:text-blue-300' :
+                                'text-orange-400 dark:text-orange-300'
+                              } mb-2 transition-colors duration-300`} />
+                              <p className="text-sm font-medium text-gray-600 dark:text-gray-300 transition-colors duration-300">PDF Document</p>
+                              <p className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">{work.type}</p>
+                            </div>
                           </div>
-                        </div>
+                        )}
                         <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
                           <div className="bg-white dark:bg-gray-800 bg-opacity-90 dark:bg-opacity-90 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
                             <Eye className="w-6 h-6 text-gray-700 dark:text-gray-300 transition-colors duration-300" />
