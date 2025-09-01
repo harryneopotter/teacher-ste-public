@@ -13,7 +13,18 @@ import Image from 'next/image'
 import { ThemeToggle } from '@/components/theme-toggle'
 
 // Mobile PDF Viewer Component
-function MobilePDFViewer({ work, index }: { work: any; index: number }) {
+interface Work {
+  id: number;
+  title: string;
+  author: string;
+  type: string;
+  description: string;
+  pdfUrl: string;
+  thumbnailUrl: string;
+  publishedDate: string;
+}
+
+function MobilePDFViewer({ work, index }: { work: Work; index: number }) {
   return (
     <div className="flex flex-col h-full space-y-4">
       {/* Header */}
@@ -50,7 +61,7 @@ function MobilePDFViewer({ work, index }: { work: any; index: number }) {
               📱 Mobile Viewing
             </p>
             <p className="text-blue-700 dark:text-blue-300 text-xs leading-relaxed">
-              Tap the button below to open this student work in your device's PDF viewer for the best reading experience.
+              Tap the button below to open this student work in your device&apos;s PDF viewer for the best reading experience.
             </p>
           </div>
           
@@ -96,7 +107,7 @@ export default function Home() {
   
   useEffect(() => {
     const checkMobile = () => {
-      const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera
+      const userAgent = navigator.userAgent || navigator.vendor || (window as unknown as { opera?: string }).opera
       const isMobileDevice = /android|blackberry|iemobile|ipad|iphone|ipod|opera mini|webos/i.test(userAgent)
       const isSmallScreen = window.innerWidth < 768
       setIsMobile(isMobileDevice || isSmallScreen)
@@ -109,7 +120,7 @@ export default function Home() {
     console.log('Thumbnail URLs:', studentWorks.map(w => w.thumbnailUrl))
     
     return () => window.removeEventListener('resize', checkMobile)
-  }, [])
+  }, [studentWorks])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
