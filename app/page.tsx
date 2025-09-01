@@ -107,7 +107,7 @@ export default function Home() {
   
   useEffect(() => {
     const checkMobile = () => {
-      const userAgent = navigator.userAgent || navigator.vendor || (window as unknown as { opera?: string }).opera
+      const userAgent = navigator.userAgent || navigator.vendor || (window as unknown as { opera?: string }).opera || ''
       const isMobileDevice = /android|blackberry|iemobile|ipad|iphone|ipod|opera mini|webos/i.test(userAgent)
       const isSmallScreen = window.innerWidth < 768
       setIsMobile(isMobileDevice || isSmallScreen)
@@ -116,11 +116,8 @@ export default function Home() {
     checkMobile()
     window.addEventListener('resize', checkMobile)
     
-    // Debug thumbnail paths
-    console.log('Thumbnail URLs:', studentWorks.map(w => w.thumbnailUrl))
-    
     return () => window.removeEventListener('resize', checkMobile)
-  }, [studentWorks])
+  }, [])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
