@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -12,6 +12,76 @@ import { BookOpen, Heart, Sparkles, Users, PenTool, Star, Quote, FileText, Eye }
 import Image from 'next/image'
 import { ThemeToggle } from '@/components/theme-toggle'
 
+// Mobile PDF Viewer Component
+function MobilePDFViewer({ work, index }: { work: any; index: number }) {
+  return (
+    <div className="flex flex-col h-full space-y-4">
+      {/* Header */}
+      <div className="text-center pb-2 border-b border-gray-200 dark:border-gray-700">
+        <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-1">
+          {work.title}
+        </h3>
+        <p className="text-sm text-gray-600 dark:text-gray-300">by {work.author}</p>
+      </div>
+      
+      {/* PDF Preview Card */}
+      <div className="flex-1 flex flex-col items-center justify-center space-y-6 p-6">
+        {/* Large PDF Icon */}
+        <div className={`w-24 h-24 rounded-xl flex items-center justify-center ${
+          index % 3 === 0 ? 'bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-800/50 dark:to-pink-800/50' :
+          index % 3 === 1 ? 'bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-800/50 dark:to-indigo-800/50' :
+          'bg-gradient-to-br from-yellow-100 to-orange-100 dark:from-yellow-800/50 dark:to-orange-800/50'
+        }`}>
+          <FileText className={`w-12 h-12 ${
+            index % 3 === 0 ? 'text-purple-600 dark:text-purple-400' :
+            index % 3 === 1 ? 'text-blue-600 dark:text-blue-400' :
+            'text-orange-600 dark:text-orange-400'
+          }`} />
+        </div>
+        
+        {/* Content */}
+        <div className="text-center space-y-4 max-w-sm">
+          <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+            {work.description}
+          </p>
+          
+          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
+            <p className="text-blue-800 dark:text-blue-200 text-sm font-medium mb-2">
+              📱 Mobile Viewing
+            </p>
+            <p className="text-blue-700 dark:text-blue-300 text-xs leading-relaxed">
+              Tap the button below to open this student work in your device's PDF viewer for the best reading experience.
+            </p>
+          </div>
+          
+          <Button 
+            asChild 
+            className={`w-full ${
+              index % 3 === 0 ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700' :
+              index % 3 === 1 ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700' :
+              'bg-gradient-to-r from-orange-600 to-yellow-600 hover:from-orange-700 hover:to-yellow-700'
+            } text-white shadow-lg hover:shadow-xl transition-all duration-300`}
+          >
+            <a 
+              href={work.pdfUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center justify-center space-x-2"
+            >
+              <FileText className="w-4 h-4" />
+              <span>View PDF</span>
+            </a>
+          </Button>
+          
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            Published: {work.publishedDate} • {work.type}
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function Home() {
   const [formData, setFormData] = useState({
     name: '',
@@ -20,6 +90,26 @@ export default function Home() {
     program: '',
     comments: ''
   })
+  
+  const [isMobile, setIsMobile] = useState(false)
+  const [failedImages, setFailedImages] = useState<Set<string>>(new Set())
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera
+      const isMobileDevice = /android|blackberry|iemobile|ipad|iphone|ipod|opera mini|webos/i.test(userAgent)
+      const isSmallScreen = window.innerWidth < 768
+      setIsMobile(isMobileDevice || isSmallScreen)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
+    // Debug thumbnail paths
+    console.log('Thumbnail URLs:', studentWorks.map(w => w.thumbnailUrl))
+    
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -36,7 +126,7 @@ export default function Home() {
       type: "Creative Writing Collection",
       description: "A comprehensive creative writing collection showcasing imaginative storytelling and creative expression from one of our talented students.",
       pdfUrl: "/pdfs/Fifilldi.pdf",
-      thumbnailUrl: null, // Will use FileText icon fallback
+      thumbnailUrl: "/logo.png",
       publishedDate: "August 2024"
     },
     {
@@ -46,7 +136,7 @@ export default function Home() {
       type: "Poetry Collection",
       description: "A beautiful collection of original poems exploring themes of nature, emotions, and imagination through the unique voice of young Navedh.",
       pdfUrl: "/pdfs/Navedh poem portfolio.pdf",
-      thumbnailUrl: null, // Will use FileText icon fallback
+      thumbnailUrl: "/logo.png",
       publishedDate: "August 2024"
     },
     {
@@ -56,7 +146,7 @@ export default function Home() {
       type: "Poetry Collection",
       description: "An inspiring portfolio of poems that showcase Varenyam&apos;s growing confidence in creative expression and poetic voice.",
       pdfUrl: "/pdfs/Varenyam poem portfolio.pdf",
-      thumbnailUrl: null, // Will use FileText icon fallback
+      thumbnailUrl: "/logo.png",
       publishedDate: "August 2024"
     }
   ]
@@ -66,6 +156,17 @@ export default function Home() {
       {/* Floating Navigation */}
       <nav className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-full px-8 py-3 shadow-lg border border-purple-100 dark:border-purple-800">
         <div className="flex items-center space-x-6">
+          <div className="flex items-center space-x-3 mr-2 pr-2 border-r border-purple-200 dark:border-purple-700">
+            <Image
+              src="/logo.png"
+              alt="Tanya's Creative Writing Program Logo"
+              width={32}
+              height={32}
+              className="object-contain"
+              style={{ width: 'auto', height: 'auto' }}
+            />
+            <span className="text-purple-800 dark:text-purple-200 font-bold text-sm transition-colors">Tanya&apos;s Program</span>
+          </div>
           <a href="#about" className="text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-100 font-medium transition-colors">About</a>
           <a href="#vision" className="text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-100 font-medium transition-colors">Vision</a>
           <a href="#program" className="text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-100 font-medium transition-colors">Program</a>
@@ -85,6 +186,23 @@ export default function Home() {
               <div className="relative">
                 <div className="absolute -top-4 -left-4 w-24 h-24 bg-yellow-200 rounded-full opacity-60"></div>
                 <div className="absolute top-8 right-8 w-16 h-16 bg-pink-200 rounded-full opacity-60"></div>
+                
+                {/* Brand Logo */}
+                <div className="flex items-center space-x-4 mb-6 relative z-10">
+                  <Image
+                    src="/logo.png"
+                    alt="Tanya's Creative Writing Program Logo"
+                    width={128}
+                    height={128}
+                    className="object-contain"
+                    style={{ width: 'auto', height: 'auto' }}
+                  />
+                  <div className="text-left">
+                    <h3 className="text-2xl font-bold text-purple-700 dark:text-purple-300 transition-colors duration-300">Tanya Kaushik</h3>
+                    <p className="text-lg text-purple-600 dark:text-purple-400 font-medium transition-colors duration-300">Creative Writing Program</p>
+                  </div>
+                </div>
+                
                 <h1 className="text-6xl lg:text-7xl font-bold text-gray-800 dark:text-gray-100 leading-tight relative z-10 transition-colors duration-300">
                   Every Child Has a 
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400"> Story</span>
@@ -444,13 +562,19 @@ export default function Home() {
                       
       {/* PDF Thumbnail */}
                       <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden bg-white dark:bg-gray-700 shadow-md transition-colors duration-300">
-                        {work.thumbnailUrl ? (
+                        {work.thumbnailUrl && !failedImages.has(work.thumbnailUrl) ? (
                           <Image
                             src={work.thumbnailUrl}
                             alt={`${work.title} thumbnail`}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            width={400}
+                            height={192}
+                            className="w-full h-full object-cover rounded-lg"
+                            onLoad={() => console.log(`Successfully loaded: ${work.thumbnailUrl}`)}
+                            onError={(e) => {
+                              console.error(`Failed to load thumbnail: ${work.thumbnailUrl}`, e);
+                              console.log(`Trying to access: ${window.location.origin}${work.thumbnailUrl}`);
+                              setFailedImages(prev => new Set([...prev, work.thumbnailUrl!]));
+                            }}
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center">
@@ -497,54 +621,45 @@ export default function Home() {
                   </Card>
                 </DialogTrigger>
                 
-                <DialogContent className="max-w-6xl w-full h-[90vh] p-6 dark:bg-gray-800 transition-colors duration-300">
-                  <DialogHeader className="pb-4">
-                    <DialogTitle className="text-xl font-semibold text-gray-800 dark:text-gray-100">
-                      {work.title} - by {work.author}
-                    </DialogTitle>
-                  </DialogHeader>
-                  
-                  {/* PDF Viewer */}
-                  <div className="flex-1 h-full bg-white dark:bg-gray-900 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
-                    <iframe
-                      src={work.pdfUrl}
-                      className="w-full h-full"
-                      title={`${work.title} by ${work.author}`}
-                      style={{ minHeight: '600px' }}
-                    >
-                      <p className="p-4 text-center text-gray-600 dark:text-gray-300">
-                        Your browser doesn&apos;t support PDF viewing.
-                        <a 
-                          href={work.pdfUrl} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="text-purple-600 hover:text-purple-700 underline ml-1"
+                <DialogContent className={`${isMobile ? 'max-w-[95vw] w-[95vw] h-[90vh]' : 'max-w-[98vw] w-[98vw] h-[98vh]'} p-4 dark:bg-gray-800 transition-colors duration-300`}>
+                  {isMobile ? (
+                    <MobilePDFViewer work={work} index={index} />
+                  ) : (
+                    <>
+                      <DialogHeader className="pb-3">
+                        <DialogTitle className="text-xl font-semibold text-gray-800 dark:text-gray-100">
+                          {work.title} - by {work.author}
+                        </DialogTitle>
+                      </DialogHeader>
+                      
+                      {/* Desktop PDF Viewer */}
+                      <div className="flex-1 h-full bg-white dark:bg-gray-900 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+                        <iframe
+                          src={`${work.pdfUrl}#toolbar=0&navpanes=0&scrollbar=0`}
+                          className="w-full h-full"
+                          title={`${work.title} by ${work.author}`}
+                          style={{ minHeight: '85vh' }}
                         >
-                          Click here to download and view the PDF.
-                        </a>
-                      </p>
-                    </iframe>
-                  </div>
-                  
-                  {/* Footer with description and external link */}
-                  <div className="mt-4 p-4 border-t dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 transition-colors duration-300 rounded-lg">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                      <div className="flex-1">
-                        <p className="text-sm text-gray-600 dark:text-gray-300 transition-colors duration-300 mb-1">
-                          {work.description}
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">
-                          Published: {work.publishedDate} • {work.type}
-                        </p>
+                          <p className="p-4 text-center text-gray-600 dark:text-gray-300">
+                            Your browser doesn&apos;t support PDF viewing.
+                            Please try refreshing the page or using a different browser.
+                          </p>
+                        </iframe>
                       </div>
-                      <Button asChild className="bg-purple-600 hover:bg-purple-700 shrink-0">
-                        <a href={work.pdfUrl} target="_blank" rel="noopener noreferrer">
-                          <FileText className="w-4 h-4 mr-2" />
-                          Open in New Tab
-                        </a>
-                      </Button>
-                    </div>
-                  </div>
+                      
+                      {/* Desktop Footer with description only */}
+                      <div className="mt-2 p-3 border-t dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 transition-colors duration-300 rounded-lg">
+                        <div className="text-center">
+                          <p className="text-sm text-gray-600 dark:text-gray-300 transition-colors duration-300 mb-1">
+                            {work.description}
+                          </p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">
+                            Published: {work.publishedDate} • {work.type}
+                          </p>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </DialogContent>
               </Dialog>
             ))}

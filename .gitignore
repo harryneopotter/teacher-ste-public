@@ -39,3 +39,23 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Migration Documentation Files (keep local only)
+.kiro/
+gcp-configuration-guide.md
+docker-and-nextjs-config.md
+migration-timeline-and-procedures.md
+vercel-to-gcp-migration-analysis.md
+current-functionality-baseline.md
+DOCUMENTATION.md
+Plan/
+sqlite_mcp_server.db
+server.log
+
+# GCP config files that should stay local only
+cors-config.json
+
+# Project status files (already in remote, but ignore future changes)
+FIXES_APPLIED.md
+PROJECT_STATUS.md
+WARP.md
