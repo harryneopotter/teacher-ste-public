@@ -165,8 +165,8 @@ export default function Home() {
       <nav className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-full px-8 py-3 shadow-lg border border-purple-100 dark:border-purple-800">
         <div className="flex items-center space-x-6">
           <div className="flex items-center space-x-3 mr-2 pr-2 border-r border-purple-200 dark:border-purple-700">
-            <img
-              src="/logo.png"
+            <Image
+              src="/api/logo"
               alt="Tanya's Creative Writing Program Logo"
               width={32}
               height={32}
@@ -197,8 +197,8 @@ export default function Home() {
                 
                 {/* Brand Logo */}
                 <div className="flex items-center space-x-4 mb-6 relative z-10">
-                  <img
-                    src="/logo.png"
+                  <Image
+                    src="/api/logo"
                     alt="Tanya's Creative Writing Program Logo"
                     width={128}
                     height={128}

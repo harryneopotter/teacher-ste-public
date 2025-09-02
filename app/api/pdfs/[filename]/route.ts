@@ -4,10 +4,10 @@ import { join } from 'path';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { filename: string } }
+  { params }: { params: Promise<{ filename: string }> }
 ) {
+  const { filename } = await params;
   try {
-    const filename = params.filename;
     const filePath = join(process.cwd(), 'public', 'pdfs', filename);
     
     if (!existsSync(filePath)) {
