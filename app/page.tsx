@@ -134,7 +134,7 @@ export default function Home() {
       type: "Creative Writing Collection",
       description: "A comprehensive creative writing collection showcasing imaginative storytelling and creative expression from one of our talented students.",
       pdfUrl: "/pdfs/Fifilldi.pdf",
-      thumbnailUrl: "/logo.png",
+      thumbnailUrl: "/thumbnails/Fifilldi.jpg",
       publishedDate: "August 2024"
     },
     {
@@ -144,7 +144,7 @@ export default function Home() {
       type: "Poetry Collection",
       description: "A beautiful collection of original poems exploring themes of nature, emotions, and imagination through the unique voice of young Navedh.",
       pdfUrl: "/pdfs/Navedh poem portfolio.pdf",
-      thumbnailUrl: "/logo.png",
+      thumbnailUrl: "/thumbnails/Navedh poem portfolio.jpg",
       publishedDate: "August 2024"
     },
     {
@@ -154,7 +154,7 @@ export default function Home() {
       type: "Poetry Collection",
       description: "An inspiring portfolio of poems that showcase Varenyam&apos;s growing confidence in creative expression and poetic voice.",
       pdfUrl: "/pdfs/Varenyam poem portfolio.pdf",
-      thumbnailUrl: "/logo.png",
+      thumbnailUrl: "/thumbnails/Varenyam poem portfolio.jpg",
       publishedDate: "August 2024"
     }
   ]
@@ -170,8 +170,7 @@ export default function Home() {
               alt="Tanya's Creative Writing Program Logo"
               width={32}
               height={32}
-              className="object-contain"
-              style={{ width: 'auto', height: 'auto' }}
+              className="object-contain w-8 h-8"
             />
             <span className="text-purple-800 dark:text-purple-200 font-bold text-sm transition-colors">Tanya&apos;s Program</span>
           </div>
@@ -202,8 +201,7 @@ export default function Home() {
                     alt="Tanya's Creative Writing Program Logo"
                     width={128}
                     height={128}
-                    className="object-contain"
-                    style={{ width: 'auto', height: 'auto' }}
+                    className="object-contain w-32 h-32"
                   />
                   <div className="text-left">
                     <h3 className="text-2xl font-bold text-purple-700 dark:text-purple-300 transition-colors duration-300">Tanya Kaushik</h3>
