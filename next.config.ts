@@ -15,7 +15,7 @@ const nextConfig: NextConfig = {
   
   // Configure images for Cloud Storage
   images: {
-    domains: ['storage.googleapis.com'],
+    domains: ['storage.googleapis.com', 'tanya-showcase-thumbnails-public.storage.googleapis.com'],
     formats: ['image/webp', 'image/avif'],
     minimumCacheTTL: 60,
   },

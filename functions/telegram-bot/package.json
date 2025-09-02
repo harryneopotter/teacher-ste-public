@@ -1,0 +1,20 @@
+{
+  "name": "telegram-showcase-bot",
+  "version": "1.0.0",
+  "description": "Telegram bot for accessible content management",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "deploy": "gcloud functions deploy telegram-showcase-bot --runtime nodejs18 --trigger http --memory 512MB --timeout 540s"
+  },
+  "dependencies": {
+    "@google-cloud/firestore": "^7.1.0",
+    "@google-cloud/storage": "^7.7.0",
+    "@google-cloud/secret-manager": "^5.0.1",
+    "node-telegram-bot-api": "^0.64.0",
+    "crypto": "^1.0.1"
+  },
+  "engines": {
+    "node": "18"
+  }
+}

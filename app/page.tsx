@@ -172,6 +172,10 @@ export default function Home() {
               height={32}
               className="object-contain"
               style={{ width: 'auto', height: 'auto' }}
+              onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                const img = e.target as HTMLImageElement;
+                img.src = '/api/logo';
+              }}
             />
             <span className="text-purple-800 dark:text-purple-200 font-bold text-sm transition-colors">Tanya&apos;s Program</span>
           </div>
@@ -204,6 +208,10 @@ export default function Home() {
                     height={128}
                     className="object-contain"
                     style={{ width: 'auto', height: 'auto' }}
+                    onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                      const img = e.target as HTMLImageElement;
+                      img.src = '/api/logo';
+                    }}
                   />
                   <div className="text-left">
                     <h3 className="text-2xl font-bold text-purple-700 dark:text-purple-300 transition-colors duration-300">Tanya Kaushik</h3>
