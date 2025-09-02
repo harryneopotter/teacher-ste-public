@@ -117,7 +117,7 @@ export default function Home() {
     window.addEventListener('resize', checkMobile)
     
     return () => window.removeEventListener('resize', checkMobile)
-  }, [])
+  }, []) // studentWorks is not used in this effect, so no dependency needed
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -444,7 +444,7 @@ export default function Home() {
                       id="name"
                       placeholder="Your answer"
                       value={formData.name}
-                      onChange={(e) => setFormData({...formData, name: e.target.value})}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({...formData, name: e.target.value})}
                       required
                       className="border-purple-200 dark:border-purple-600 focus:border-purple-500 dark:focus:border-purple-400 dark:bg-gray-700 dark:text-gray-100 transition-colors duration-300"
                     />
@@ -455,7 +455,7 @@ export default function Home() {
                       id="grade"
                       placeholder="Your answer"
                       value={formData.grade}
-                      onChange={(e) => setFormData({...formData, grade: e.target.value})}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({...formData, grade: e.target.value})}
                       required
                       className="border-purple-200 dark:border-purple-600 focus:border-purple-500 dark:focus:border-purple-400 dark:bg-gray-700 dark:text-gray-100 transition-colors duration-300"
                     />
@@ -468,7 +468,7 @@ export default function Home() {
                     id="phone"
                     placeholder="Your answer"
                     value={formData.phone}
-                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({...formData, phone: e.target.value})}
                     required
                     className="border-purple-200 dark:border-purple-600 focus:border-purple-500 dark:focus:border-purple-400 dark:bg-gray-700 dark:text-gray-100 transition-colors duration-300"
                   />
@@ -502,7 +502,7 @@ export default function Home() {
                     id="comments"
                     placeholder="Your answer"
                     value={formData.comments}
-                    onChange={(e) => setFormData({...formData, comments: e.target.value})}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setFormData({...formData, comments: e.target.value})}
                     className="border-purple-200 dark:border-purple-600 focus:border-purple-500 dark:focus:border-purple-400 dark:bg-gray-700 dark:text-gray-100 min-h-[100px] transition-colors duration-300"
                   />
                 </div>
@@ -578,7 +578,7 @@ export default function Home() {
                             height={192}
                             className="w-full h-full object-cover rounded-lg"
                             onLoad={() => console.log(`Successfully loaded: ${work.thumbnailUrl}`)}
-                            onError={(e) => {
+                            onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
                               console.error(`Failed to load thumbnail: ${work.thumbnailUrl}`, e);
                               console.log(`Trying to access: ${window.location.origin}${work.thumbnailUrl}`);
                               setFailedImages(prev => new Set([...prev, work.thumbnailUrl!]));
