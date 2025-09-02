@@ -4,14 +4,15 @@ import { getFirestore } from 'firebase-admin/firestore';
 
 // Initialize Firebase Admin (only once)
 if (!getApps().length) {
-  initializeApp({
-    credential: cert({
+  // In Cloud Run, use default service account
+  if (process.env.GOOGLE_CLOUD_PROJECT) {
+    initializeApp({
       projectId: process.env.GOOGLE_CLOUD_PROJECT,
-      // In production, these would come from service account key
-      // For now, we'll use the default service account
-    }),
-    projectId: process.env.GOOGLE_CLOUD_PROJECT,
-  });
+    });
+  } else {
+    // For local development, you might need to set GOOGLE_APPLICATION_CREDENTIALS
+    initializeApp();
+  }
 }
 
 const db = getFirestore();
