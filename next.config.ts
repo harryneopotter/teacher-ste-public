@@ -18,6 +18,7 @@ const nextConfig: NextConfig = {
     domains: ['storage.googleapis.com', 'tanya-showcase-thumbnails-public.storage.googleapis.com'],
     formats: ['image/webp', 'image/avif'],
     minimumCacheTTL: 60,
+    unoptimized: true, // Disable image optimization for Cloud Run
   },
   
   // Headers for security
