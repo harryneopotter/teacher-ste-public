@@ -165,17 +165,13 @@ export default function Home() {
       <nav className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-full px-8 py-3 shadow-lg border border-purple-100 dark:border-purple-800">
         <div className="flex items-center space-x-6">
           <div className="flex items-center space-x-3 mr-2 pr-2 border-r border-purple-200 dark:border-purple-700">
-            <Image
+            <img
               src="/logo.png"
               alt="Tanya's Creative Writing Program Logo"
               width={32}
               height={32}
               className="object-contain"
               style={{ width: 'auto', height: 'auto' }}
-              onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-                const img = e.target as HTMLImageElement;
-                img.src = '/api/logo';
-              }}
             />
             <span className="text-purple-800 dark:text-purple-200 font-bold text-sm transition-colors">Tanya&apos;s Program</span>
           </div>
@@ -201,17 +197,13 @@ export default function Home() {
                 
                 {/* Brand Logo */}
                 <div className="flex items-center space-x-4 mb-6 relative z-10">
-                  <Image
+                  <img
                     src="/logo.png"
                     alt="Tanya's Creative Writing Program Logo"
                     width={128}
                     height={128}
                     className="object-contain"
                     style={{ width: 'auto', height: 'auto' }}
-                    onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-                      const img = e.target as HTMLImageElement;
-                      img.src = '/api/logo';
-                    }}
                   />
                   <div className="text-left">
                     <h3 className="text-2xl font-bold text-purple-700 dark:text-purple-300 transition-colors duration-300">Tanya Kaushik</h3>
