@@ -19,10 +19,9 @@ steps:
       - 'us-central1'
       - '--platform'
       - 'managed'
-      - '--service-account'
-      - 'cloud-run-sa@$PROJECT_ID.iam.gserviceaccount.com'
+
       - '--set-env-vars'
-      - 'NODE_ENV=production,GOOGLE_CLOUD_PROJECT=$PROJECT_ID,PORT=8080'
+      - 'NODE_ENV=production,GOOGLE_CLOUD_PROJECT=$PROJECT_ID'
       - '--port'
       - '8080'
       - '--allow-unauthenticated'
