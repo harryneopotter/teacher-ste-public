@@ -1,87 +1,197 @@
-# Telegram Showcase Bot Setup
+# Tanya's Telegram Showcase Bot
 
-## Prerequisites
-- ✅ Bot token already stored in Secret Manager
-- ✅ GCP project configured
-- ✅ Firestore and Storage buckets ready
+A Telegram bot for managing student showcase content with PDF upload, metadata collection, and automatic publishing to the website.
 
-## Step 1: Get Your Telegram User ID
+## 🚀 Quick Start
 
-1. **Navigate to the bot directory:**
-   ```bash
-   cd functions/telegram-bot
-   ```
+### 1. Deploy the Cloud Function
 
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+```bash
+# Navigate to the bot directory
+cd functions/telegram-bot
 
-3. **Run the setup script to get your user ID:**
-   ```bash
-   npm run setup
-   ```
+# Deploy the function (Node.js 20)
+./deploy.sh
+```
 
-4. **Open Telegram and find your bot**
-5. **Send any message to the bot**
-6. **Copy your user ID from the console output**
+**Note:** Updated to Node.js 20 (latest LTS) for better performance and security.
+```
 
-## Step 2: Add Your User ID to the Bot
+### 2. Setup Webhook
 
-1. **Edit `index.js`** and find the `AUTHORIZED_USERS` object
-2. **Add your user ID:**
-   ```javascript
-   const AUTHORIZED_USERS = {
-     'YOUR_USER_ID_HERE': 'admin',  // Replace with your actual user ID
-   };
-   ```
+**Option A: Automatic Setup (Recommended)**
+```bash
+# Setup Telegram webhook (run after deployment)
+./setup-webhook-manual.sh
+```
 
-## Step 3: Deploy the Cloud Function
+**Option B: Interactive Setup (if automatic fails)**
+```bash
+# Setup with manual URL input
+./setup-webhook.sh
+```
 
-1. **Make the deploy script executable:**
-   ```bash
-   chmod +x deploy.sh
-   ```
+### 3. Get Your User ID
 
-2. **Deploy the function:**
-   ```bash
-   npm run deploy
-   ```
+**Option A: Use the bot command**
+Send `/userid` to the bot to get your Telegram user ID.
 
-3. **Copy the function URL from the output**
+**Option B: Use the helper script**
+```bash
+export TELEGRAM_BOT_TOKEN=your_bot_token_here
+npm run get-userid
+```
 
-## Step 4: Set Up the Webhook
+### 4. Update Authorized Users
 
-1. **Set the webhook using the function URL:**
-   ```bash
-   npm run webhook <FUNCTION_URL>
-   ```
+Edit `index.js` and replace the user ID:
+```javascript
+const AUTHORIZED_USERS = {
+  'YOUR_ACTUAL_USER_ID': 'admin', // Replace with your ID
+};
+```
 
-## Step 5: Test the Bot
+## 📋 Available Commands
 
-1. **Send `/start` to your bot on Telegram**
-2. **Try uploading a PDF file**
-3. **Check the bot responds correctly**
+- `/start` - Initialize the bot and see welcome message
+- `/help` - Show help and available commands
+- `/list` - View all published showcase items
+- `/status` - Check bot status and your role
+- `/userid` - Get your Telegram user ID
+- `/cancel` - Cancel current PDF upload process
+- Send PDF files to add new student work (max 20MB)
 
-## Bot Commands
+## 📄 PDF Upload Limits
 
-- `/start` - Welcome message and instructions
-- `/help` - Show help information
-- `/list` - List all published showcase items
-- `/status` - Check bot status
-- **Send PDF** - Upload new student work
+**File Size Limits:**
+- **Maximum PDF size**: 20MB (Telegram bot limit)
+- **Recommended size**: Under 10MB for faster processing
+- **Memory available**: 512MB for processing
+- **Timeout limit**: 9 minutes (540 seconds)
 
-## Troubleshooting
+**Processing Time:**
+- Small PDFs (< 5MB): 30-60 seconds
+- Medium PDFs (5-15MB): 2-5 minutes
+- Large PDFs (15-20MB): 5-9 minutes
 
-- **Bot not responding**: Check Cloud Function logs
-- **Permission denied**: Verify your user ID is in AUTHORIZED_USERS
-- **File upload fails**: Check Storage bucket permissions
-- **Webhook issues**: Verify the webhook URL is set correctly
+**Cancellation:**
+- Send `/cancel` at any time to stop the current upload process
+- You can restart by sending a new PDF file
+- Cancellation is immediate and safe
 
-## Files Overview
+## 🔧 Configuration
 
-- `index.js` - Main bot logic
-- `package.json` - Dependencies and scripts
-- `deploy.sh` - Deployment script
-- `setup-telegram.js` - Get user ID helper
-- `set-webhook.js` - Webhook setup helper
+### Environment Variables
+
+Set these in your Cloud Function environment:
+```bash
+GOOGLE_CLOUD_PROJECT=driven-bison-470218-v3
+TELEGRAM_BOT_TOKEN=your_bot_token
+TELEGRAM_ADMIN_USER_ID=your_user_id
+```
+
+### Cloud Storage Buckets
+
+The bot uses these buckets (create them if they don't exist):
+- `tanya-showcase-pdfs-private` - For PDF files
+- `tanya-showcase-thumbnails-public` - For thumbnail images
+
+## 📝 Workflow
+
+1. **Send PDF**: User sends a PDF file to the bot
+2. **Collect Metadata**: Bot asks for title, author, and description
+3. **Upload Files**: PDF uploaded to private bucket, thumbnail to public bucket
+4. **Generate URL**: Signed URL created for PDF access
+5. **Save to Database**: All data saved to Firestore
+6. **Publish**: Content automatically appears on the website
+
+## 🐛 Troubleshooting
+
+### PDF Upload Issues
+
+1. **Check Cloud Storage permissions**
+2. **Verify bucket names match configuration**
+3. **Check Cloud Function logs for detailed errors**
+
+### Bot Not Responding
+
+1. **Verify webhook is set up**: Run `./setup-webhook.sh`
+2. **Check bot token is correct**
+3. **Ensure user is authorized**: Use `/userid` to verify
+
+### User ID Issues
+
+1. **Current ID may be wrong**: Use `/userid` command
+2. **Update AUTHORIZED_USERS**: Replace with correct ID
+3. **Redeploy after changes**
+
+## 🔍 Debug Tools
+
+### Test Cloud Storage Connection
+```bash
+npm run test
+```
+
+### Get User ID Locally
+```bash
+npm run get-userid
+```
+
+### Check Function Logs
+```bash
+gcloud functions logs read telegram-showcase-bot --region=us-central1
+```
+
+## 📊 Integration
+
+### Contact Form Notifications
+
+The bot automatically receives notifications when:
+- New applications are submitted via the website
+- Form data includes student details and contact info
+- Tanya receives instant Telegram alerts
+
+### Content Management
+
+- **PDF Storage**: Private bucket with signed URLs
+- **Thumbnail Storage**: Public bucket for fast loading
+- **Database**: Firestore for metadata and content
+- **Website Integration**: Automatic publishing to showcase
+
+## 🛠️ Development
+
+### Local Testing
+
+```bash
+# Install dependencies
+npm install
+
+# Test locally (requires local Firebase setup)
+npm start
+
+# Run tests
+npm test
+```
+
+### File Structure
+
+```
+functions/telegram-bot/
+├── index.js              # Main bot logic
+├── deploy.sh            # Deployment script
+├── setup-webhook.sh     # Webhook configuration
+├── get-user-id.js       # User ID helper
+├── test-pdf.js          # Debug tests
+├── package.json         # Dependencies
+└── README.md           # This file
+```
+
+## 📞 Support
+
+If you encounter issues:
+1. Check Cloud Function logs
+2. Verify bot token and user permissions
+3. Test with simple commands first
+4. Use debug tools to isolate problems
+
+The bot includes comprehensive logging to help identify and resolve issues quickly.

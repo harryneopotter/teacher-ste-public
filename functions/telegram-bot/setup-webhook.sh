@@ -3,18 +3,30 @@
 # Setup Telegram webhook for the deployed Cloud Function
 # Run this in Google Cloud Shell after deploying the function
 
-PROJECT_ID="driven-bison-470218-v3"
+PROJECT_ID="${PROJECT_ID:-driven-bison-470218-v3}"
 FUNCTION_NAME="telegram-showcase-bot"
-REGION="us-central1"
+REGION="${REGION:-us-central1}"
 
 echo "🔗 Setting up Telegram webhook..."
 
 # Get the function URL
-FUNCTION_URL=$(gcloud functions describe $FUNCTION_NAME --region=$REGION --format="value(url)")
+echo "🔍 Retrieving function URL..."
+FUNCTION_URL=$(gcloud functions describe $FUNCTION_NAME --region=$REGION --format="value(httpsTrigger.url)" 2>/dev/null || echo "")
 
 if [ -z "$FUNCTION_URL" ]; then
-    echo "❌ Could not get function URL. Make sure the function is deployed."
-    exit 1
+    echo "⚠️  Could not retrieve function URL automatically."
+    echo "📝 Please provide the function URL manually."
+    echo "💡 You can find it in the Google Cloud Console:"
+    echo "   1. Go to Cloud Functions"
+    echo "   2. Select your function"
+    echo "   3. Copy the 'Trigger URL'"
+    echo ""
+    read -p "Enter the function URL: " FUNCTION_URL
+
+    if [ -z "$FUNCTION_URL" ]; then
+        echo "❌ No function URL provided. Exiting."
+        exit 1
+    fi
 fi
 
 echo "📡 Function URL: $FUNCTION_URL"

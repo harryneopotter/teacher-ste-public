@@ -6,7 +6,7 @@ steps:
       - 'functions'
       - 'deploy'
       - 'telegram-showcase-bot'
-      - '--runtime=nodejs18'
+      - '--runtime=nodejs20'
       - '--trigger=http'
       - '--memory=512MB'
       - '--timeout=540s'

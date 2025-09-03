@@ -28,6 +28,22 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.onCaptchaVerify = function(token) {
+                window.captchaToken = token;
+                // Dispatch custom event to notify React components
+                window.dispatchEvent(new CustomEvent('captchaVerified', { detail: token }));
+              };
+              window.onCaptchaExpired = function() {
+                window.captchaToken = null;
+                window.dispatchEvent(new CustomEvent('captchaExpired'));
+              };
+            `,
+          }}
+        />
       </head>
       <body
         className={`${inter.variable} font-sans antialiased transition-colors duration-300`}

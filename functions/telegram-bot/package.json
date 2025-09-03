@@ -5,9 +5,11 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "deploy": "bash deploy.sh",
+    "deploy": "./deploy.sh",
     "setup": "node setup-telegram.js",
-    "webhook": "node set-webhook.js"
+    "webhook": "node set-webhook.js",
+    "test": "node test-pdf.js",
+    "get-userid": "node get-user-id.js"
   },
   "dependencies": {
     "@google-cloud/firestore": "^7.1.0",
@@ -17,6 +19,6 @@
     "express": "^4.18.2"
   },
   "engines": {
-    "node": "18"
+    "node": "20"
   }
 }
