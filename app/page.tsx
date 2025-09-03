@@ -568,38 +568,19 @@ export default function Home() {
                       
       {/* PDF Thumbnail */}
                       <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden bg-white dark:bg-gray-700 shadow-md transition-colors duration-300">
-                        {work.thumbnailUrl && !failedImages.has(work.thumbnailUrl) ? (
-                          <Image
-                            src={work.thumbnailUrl}
+                        <img
+                            src={`${work.thumbnailUrl}?t=${Date.now()}`}
                             alt={`${work.title} thumbnail`}
                             width={400}
                             height={192}
                             className="w-full h-full object-cover rounded-lg"
-                            onLoad={() => console.log(`Successfully loaded: ${work.thumbnailUrl}`)}
+                            onLoad={() => console.log(`✅ Successfully loaded: ${work.thumbnailUrl}`)}
                             onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-                              console.error(`Failed to load thumbnail: ${work.thumbnailUrl}`, e);
-                              console.log(`Trying to access: ${window.location.origin}${work.thumbnailUrl}`);
-                              setFailedImages(prev => new Set([...prev, work.thumbnailUrl!]));
+                              console.error(`❌ Failed to load: ${work.thumbnailUrl}`, e);
+                              e.currentTarget.src = "/logo.png"; // Fallback to a default image
                             }}
                           />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <div className={`w-full h-full flex flex-col items-center justify-center ${
-                              index % 3 === 0 ? 'bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30' :
-                              index % 3 === 1 ? 'bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30' :
-                              'bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/30 dark:to-orange-900/30'
-                            } transition-colors duration-300`}>
-                              <FileText className={`w-16 h-16 ${
-                                index % 3 === 0 ? 'text-purple-400 dark:text-purple-300' :
-                                index % 3 === 1 ? 'text-blue-400 dark:text-blue-300' :
-                                'text-orange-400 dark:text-orange-300'
-                              } mb-2 transition-colors duration-300`} />
-                              <p className="text-sm font-medium text-gray-600 dark:text-gray-300 transition-colors duration-300">PDF Document</p>
-                              <p className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">{work.type}</p>
-                            </div>
-                          </div>
-                        )}
-                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
+                        <div className="absolute inset-0 bg-transparent group-hover:bg-black group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center pointer-events-none">
                           <div className="bg-white dark:bg-gray-800 bg-opacity-90 dark:bg-opacity-90 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
                             <Eye className="w-6 h-6 text-gray-700 dark:text-gray-300 transition-colors duration-300" />
                           </div>
