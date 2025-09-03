@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { BookOpen, Heart, Sparkles, Users, PenTool, Star, Quote, FileText, Eye, Menu, X } from 'lucide-react'
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import Image from 'next/image'
 import { ThemeToggle } from '@/components/theme-toggle'
 
@@ -668,7 +669,12 @@ export default function Home() {
                 
                 <DialogContent className={`${isMobile ? 'max-w-[95vw] w-[95vw] h-[90vh]' : 'max-w-[98vw] w-[98vw] h-[98vh]'} p-4 dark:bg-gray-800 transition-colors duration-300`}>
                   {isMobile ? (
-                    <MobilePDFViewer work={work} index={index} />
+                    <>
+                      <VisuallyHidden>
+                        <DialogTitle>{work.title} - by {work.author}</DialogTitle>
+                      </VisuallyHidden>
+                      <MobilePDFViewer work={work} index={index} />
+                    </>
                   ) : (
                     <>
                       <DialogHeader className="pb-3">
