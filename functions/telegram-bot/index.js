@@ -242,7 +242,8 @@ async function handleDocument(msg) {
     // Download the file
     const fileLink = await bot.getFileLink(document.file_id);
     const response = await fetch(fileLink);
-    const buffer = await response.buffer();
+    const arrayBuffer = await response.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
     
     // Generate unique filename
     const timestamp = Date.now();
