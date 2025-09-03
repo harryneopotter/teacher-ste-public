@@ -10,7 +10,7 @@ REGION="us-central1"
 echo "🔗 Setting up Telegram webhook..."
 
 # Get the function URL
-FUNCTION_URL=$(gcloud functions describe $FUNCTION_NAME --region=$REGION --format="value(httpsTrigger.url)")
+FUNCTION_URL=$(gcloud functions describe $FUNCTION_NAME --region=$REGION --format="value(url)")
 
 if [ -z "$FUNCTION_URL" ]; then
     echo "❌ Could not get function URL. Make sure the function is deployed."
