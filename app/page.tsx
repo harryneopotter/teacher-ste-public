@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { BookOpen, Heart, Sparkles, Users, PenTool, Star, Quote, FileText, Eye } from 'lucide-react'
+import { BookOpen, Heart, Sparkles, Users, PenTool, Star, Quote, FileText, Eye, Menu, X } from 'lucide-react'
 import Image from 'next/image'
 import { ThemeToggle } from '@/components/theme-toggle'
 
@@ -103,6 +103,7 @@ export default function Home() {
   })
   
   const [isMobile, setIsMobile] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   
   useEffect(() => {
     const checkMobile = () => {
@@ -173,15 +174,73 @@ export default function Home() {
             />
             <span className="text-purple-800 dark:text-purple-200 font-bold text-sm transition-colors">Tanya&apos;s Program</span>
           </div>
-          <a href="#about" className="text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-100 font-medium transition-colors">About</a>
-          <a href="#vision" className="text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-100 font-medium transition-colors">Vision</a>
-          <a href="#program" className="text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-100 font-medium transition-colors">Program</a>
-          <a href="#apply" className="text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-100 font-medium transition-colors">Apply</a>
-          <a href="#showcase" className="text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-100 font-medium transition-colors">Showcase</a>
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-6">
+            <a href="#about" className="text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-100 font-medium transition-colors">About</a>
+            <a href="#vision" className="text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-100 font-medium transition-colors">Vision</a>
+            <a href="#program" className="text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-100 font-medium transition-colors">Program</a>
+            <a href="#apply" className="text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-100 font-medium transition-colors">Apply</a>
+            <a href="#showcase" className="text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-100 font-medium transition-colors">Showcase</a>
+          </div>
+
+          {/* Mobile Hamburger Menu */}
+          <div className="md:hidden">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-100 p-2"
+            >
+              {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </Button>
+          </div>
           <div className="ml-2 pl-2 border-l border-purple-200 dark:border-purple-700">
             <ThemeToggle />
           </div>
         </div>
+
+        {/* Mobile Menu Dropdown */}
+        {isMenuOpen && (
+          <div className="absolute top-full left-0 right-0 mt-2 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-2xl shadow-xl border border-purple-100 dark:border-purple-800 md:hidden">
+            <div className="flex flex-col space-y-2 p-4">
+              <a
+                href="#about"
+                className="text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-100 font-medium transition-colors py-2 px-3 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-800/50"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                About
+              </a>
+              <a
+                href="#vision"
+                className="text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-100 font-medium transition-colors py-2 px-3 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-800/50"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Vision
+              </a>
+              <a
+                href="#program"
+                className="text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-100 font-medium transition-colors py-2 px-3 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-800/50"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Program
+              </a>
+              <a
+                href="#apply"
+                className="text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-100 font-medium transition-colors py-2 px-3 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-800/50"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Apply
+              </a>
+              <a
+                href="#showcase"
+                className="text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-100 font-medium transition-colors py-2 px-3 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-800/50"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Showcase
+              </a>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* Hero Section - Asymmetric Layout */}
