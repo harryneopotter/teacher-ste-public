@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { initializeApp, getApps, cert } from 'firebase-admin/app';
+import { initializeApp, getApps } from 'firebase-admin/app';
 import { getFirestore, FieldValue } from 'firebase-admin/firestore';
 
 // Initialize Firebase Admin (only once)
@@ -55,7 +55,7 @@ async function verifyCaptcha(token: string): Promise<boolean> {
 }
 
 // Send Telegram notification for new applications
-async function sendTelegramNotification(applicationData: any, applicationId: string) {
+async function sendTelegramNotification(applicationData: FirestoreApplicationData, applicationId: string) {
   try {
     // Get bot token from environment or Secret Manager
     const botToken = process.env.TELEGRAM_BOT_TOKEN;
@@ -112,6 +112,18 @@ interface ApplicationFormData {
   program: string;
   comments?: string;
   captchaToken?: string;
+}
+
+interface FirestoreApplicationData {
+  studentName: string;
+  grade: string;
+  phoneNumber: string;
+  program: string;
+  comments: string;
+  submittedAt: FieldValue;
+  ipAddress: string;
+  captchaVerified: boolean;
+  status: string;
 }
 
 export async function POST(request: NextRequest) {

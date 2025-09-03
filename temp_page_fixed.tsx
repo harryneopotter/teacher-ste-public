@@ -103,6 +103,7 @@ export default function Home() {
   })
   
   const [isMobile, setIsMobile] = useState(false)
+  const [failedImages, setFailedImages] = useState<Set<string>>(new Set())
   
   useEffect(() => {
     const checkMobile = () => {
@@ -567,7 +568,7 @@ export default function Home() {
                       
       {/* PDF Thumbnail */}
                       <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden bg-white dark:bg-gray-700 shadow-md transition-colors duration-300">
-                        <Image
+                        <img
                             src={`${work.thumbnailUrl}?t=${Date.now()}`}
                             alt={`${work.title} thumbnail`}
                             width={400}
