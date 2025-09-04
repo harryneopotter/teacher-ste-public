@@ -25,6 +25,15 @@ let geminiApiKey;
 // Conversation state management
 const conversationStates = new Map();
 
+// Step 1: Add Markdown sanitization utility
+// Escapes Telegram Markdown special characters
+function sanitizeMarkdown(text) {
+  if (!text) return '';
+  // Escape Telegram MarkdownV2 special chars
+  return text.replace(/[*_\[\]()~`>#+=|{}.!-]/g, match => '\\' + match);
+}
+
+
 // Initialize secrets
 async function initializeSecrets() {
   try {
@@ -48,6 +57,7 @@ async function initializeSecrets() {
     console.error('Error initializing secrets:', error);
     throw error;
   }
+
 }
 
 // Verify user authorization
@@ -175,17 +185,18 @@ async function processConversationStep(userId, text, chatId) {
   const state = getConversationState(userId);
   if (!state) return false;
 
+  // Step 2: Use sanitized user input in all Markdown messages
   switch (state.step) {
     case 'waiting_for_title':
       state.data.title = text.trim();
       state.step = 'waiting_for_author';
-      await bot.sendMessage(chatId, '📝 Great! Now please provide the author name:');
+      await safeSendMessage(chatId, '📝 Great! Now please provide the author name:', 'Markdown');
       break;
 
     case 'waiting_for_author':
       state.data.author = text.trim();
       state.step = 'waiting_for_description';
-      await bot.sendMessage(chatId, '📝 Perfect! Now please provide a description of the work:');
+      await safeSendMessage(chatId, '📝 Perfect! Now please provide a description of the work:', 'Markdown');
       break;
 
     case 'waiting_for_description':
@@ -205,9 +216,11 @@ async function processConversationStep(userId, text, chatId) {
         thumbnailUrl: '/thumbnails/test.jpg' // Default thumbnail
       });
 
-      await bot.sendMessage(chatId, `✅ **${state.data.title}** has been published successfully!`);
-      await bot.sendMessage(chatId, `🔗 PDF URL: ${signedUrl}`);
-      await bot.sendMessage(chatId, '📸 Optionally, you can send a thumbnail image for this work, or send /done to finish.');
+      // Step 3: Sanitize user input in published message
+      const safeTitle = sanitizeMarkdown(state.data.title);
+      await safeSendMessage(chatId, `✅ *${safeTitle}* has been published successfully!`, 'MarkdownV2');
+      await safeSendMessage(chatId, `🔗 PDF URL: ${signedUrl}`, 'Markdown');
+      await safeSendMessage(chatId, '📸 Optionally, you can send a thumbnail image for this work, or send /done to finish.', 'Markdown');
 
       state.step = 'waiting_for_thumbnail_or_done';
       break;
@@ -215,14 +228,32 @@ async function processConversationStep(userId, text, chatId) {
     case 'waiting_for_thumbnail_or_done':
       if (text.toLowerCase() === '/done') {
         clearConversationState(userId);
-        await bot.sendMessage(chatId, '🎉 All done! Your student work is now live on the website.');
+        await safeSendMessage(chatId, '🎉 All done! Your student work is now live on the website.', 'Markdown');
       } else {
-        await bot.sendMessage(chatId, '📸 Please send a thumbnail image or type /done to finish.');
+        await safeSendMessage(chatId, '📸 Please send a thumbnail image or type /done to finish.', 'Markdown');
       }
       break;
   }
 
   return true;
+
+// Step 4: Add safeSendMessage wrapper for error handling
+}
+
+async function safeSendMessage(chatId, text, parseMode) {
+  try {
+    await bot.sendMessage(chatId, text, parseMode ? { parse_mode: parseMode } : undefined);
+  } catch (err) {
+    console.error('Error sending Telegram message:', err);
+    // Optionally, send a fallback plain text message
+    if (parseMode) {
+      try {
+        await bot.sendMessage(chatId, text);
+      } catch (e) {
+        console.error('Fallback plain text message also failed:', e);
+      }
+    }
+  }
 }
 
 // Handle text messages
@@ -232,80 +263,21 @@ async function handleTextMessage(msg) {
   const text = msg.text;
   
   if (!isAuthorized(userId)) {
-    await bot.sendMessage(chatId, '❌ You are not authorized to use this bot.');
+    await safeSendMessage(chatId, '❌ You are not authorized to use this bot.');
     return;
   }
-  
+
+  // Command handling (unnested)
   if (text === '/start') {
-    const welcomeMessage = `
-🎨 **Tanya's Showcase Bot**
-
-Welcome! This bot helps you manage student showcase content.
-
-**Your Role:** ${getUserRole(userId) || 'Not authorized'}
-
-**Commands:**
-📝 Send a PDF file to add a new student work
-📋 /list - View all showcase items
-🔍 /status - Check bot status and your role
-👤 /userid - Get your Telegram user ID
-❌ /cancel - Cancel current PDF upload process
-❓ /help - Show this help message
-
-**Admin Commands:**
-👥 /adduser - Add new users (admin only)
-
-**How to add content:**
-1. Send a PDF file (max 20MB)
-2. I'll ask for title, author, and description
-3. Optionally send a thumbnail image
-4. Content goes live automatically!
-
-**Tips:**
-• Use /cancel to stop the process anytime
-• Processing may take up to 9 minutes for large files
-• All PDFs are stored securely with signed URLs
-    `;
-    
-    await bot.sendMessage(chatId, welcomeMessage, { parse_mode: 'Markdown' });
+    const welcomeMessage = `🎨 Tanya's Showcase Bot\n\nWelcome! This bot helps you manage student showcase content.\n\nYour Role: ${sanitizeMarkdown(getUserRole(userId) || 'Not authorized')}\n\nCommands:\n📝 Send a PDF file to add a new student work\n📋 /list - View all showcase items\n🔍 /status - Check bot status and your role\n👤 /userid - Get your Telegram user ID\n❌ /cancel - Cancel current PDF upload process\n❓ /help - Show this help message\n\nAdmin Commands:\n👥 /adduser - Add new users (admin only)\n\nHow to add content:\n1. Send a PDF file (max 20MB)\n2. I'll ask for title, author, and description\n3. Optionally send a thumbnail image\n4. Content goes live automatically!\n\nTips:\n• Use /cancel to stop the process anytime\n• Processing may take up to 9 minutes for large files\n• All PDFs are stored securely with signed URLs`;
+    await safeSendMessage(chatId, welcomeMessage, 'Markdown');
     return;
   }
-  
   if (text === '/help') {
-    const helpMessage = `
-📚 **Help - Tanya's Showcase Bot**
-
-**Adding Student Work:**
-1. Send a PDF file of the student's work
-2. Follow the prompts to add details
-3. Optionally add a thumbnail image
-
-**Commands:**
-📋 /list - View all published works
-🔍 /status - Check bot status and your role
-👤 /userid - Get your Telegram user ID
-❌ /cancel - Cancel current PDF upload process
-❓ /help - Show this help
-
-**PDF Upload Limits:**
-📄 Max size: 20MB (Telegram limit)
-⏱️  Processing timeout: 9 minutes
-💾 Memory: 512MB available
-
-**Admin Commands:**
-👥 /adduser - Add new users (admin only)
-
-**Tips:**
-• Use voice messages for descriptions (accessibility feature)
-• AI will help improve descriptions
-• All PDFs are private with signed URLs
-• Thumbnails are public for fast loading
-    `;
-    
-    await bot.sendMessage(chatId, helpMessage, { parse_mode: 'Markdown' });
+    const helpMessage = `📚 Help - Tanya's Showcase Bot\n\nAdding Student Work:\n1. Send a PDF file of the student's work\n2. Follow the prompts to add details\n3. Optionally add a thumbnail image\n\nCommands:\n📋 /list - View all published works\n🔍 /status - Check bot status and your role\n👤 /userid - Get your Telegram user ID\n❌ /cancel - Cancel current PDF upload process\n❓ /help - Show this help\n\nPDF Upload Limits:\n📄 Max size: 20MB (Telegram limit)\n⏱️  Processing timeout: 9 minutes\n💾 Memory: 512MB available\n\nAdmin Commands:\n👥 /adduser - Add new users (admin only)\n\nTips:\n• Use voice messages for descriptions (accessibility feature)\n• AI will help improve descriptions\n• All PDFs are private with signed URLs\n• Thumbnails are public for fast loading`;
+    await safeSendMessage(chatId, helpMessage, 'Markdown');
     return;
   }
-  
   if (text === '/list') {
     try {
       const snapshot = await firestore.collection('showcase')
@@ -313,187 +285,124 @@ Welcome! This bot helps you manage student showcase content.
         .orderBy('createdAt', 'desc')
         .limit(10)
         .get();
-      
       if (snapshot.empty) {
-        await bot.sendMessage(chatId, '📚 No showcase items found.');
+        await safeSendMessage(chatId, '📚 No showcase items found.');
         return;
       }
-      
-      let message = '📚 **Published Showcase Items:**\\n\\n';
+      let message = '📚 Published Showcase Items:\n\n';
       snapshot.forEach(doc => {
         const data = doc.data();
-        message += `📖 **${data.title}**\\n`;
-        message += `👤 Author: ${data.author}\\n`;
-        message += `📅 ${data.createdAt.toDate().toLocaleDateString()}\\n\\n`;
+        message += `📖 ${sanitizeMarkdown(data.title)}\n`;
+        message += `👤 Author: ${sanitizeMarkdown(data.author)}\n`;
+        message += `📅 ${data.createdAt.toDate().toLocaleDateString()}\n\n`;
       });
-      
-      await bot.sendMessage(chatId, message, { parse_mode: 'Markdown' });
+      await safeSendMessage(chatId, message, 'Markdown');
     } catch (error) {
       console.error('Error listing items:', error);
-      await bot.sendMessage(chatId, '❌ Error retrieving showcase items.');
+      await safeSendMessage(chatId, '❌ Error retrieving showcase items.');
     }
     return;
   }
-  
   if (text === '/status') {
-    const statusMessage = `
-🤖 **Bot Status**
-
-✅ Bot is running
-✅ Connected to Firestore
-✅ Connected to Cloud Storage
-✅ Secrets loaded
-
-📊 **Storage Buckets:**
-• PDFs: ${BUCKET_PDFS}
-• Thumbnails: ${BUCKET_THUMBNAILS}
-
-👤 **Your Role:** ${getUserRole(userId) || 'Not authorized'}
-👤 **Total Users:** ${Object.keys(AUTHORIZED_USERS).length}
-👤 **Your User ID:** ${userId}
-    `;
-
-    await bot.sendMessage(chatId, statusMessage, { parse_mode: 'Markdown' });
+    const statusMessage = `🤖 Bot Status\n\n✅ Bot is running\n✅ Connected to Firestore\n✅ Connected to Cloud Storage\n✅ Secrets loaded\n\n📊 Storage Buckets:\n• PDFs: ${sanitizeMarkdown(BUCKET_PDFS)}\n• Thumbnails: ${sanitizeMarkdown(BUCKET_THUMBNAILS)}\n\n👤 Your Role: ${sanitizeMarkdown(getUserRole(userId) || 'Not authorized')}\n👤 Total Users: ${Object.keys(AUTHORIZED_USERS).length}\n👤 Your User ID: ${userId}`;
+    await safeSendMessage(chatId, statusMessage, 'Markdown');
     return;
   }
-
   if (text === '/userid') {
-    await bot.sendMessage(chatId, `👤 **Your Telegram User ID:** \`${userId}\`\n\nUse this ID to update the AUTHORIZED_USERS list in the bot code.`, { parse_mode: 'Markdown' });
+    await safeSendMessage(chatId, `👤 Your Telegram User ID: ${userId}\n\nUse this ID to update the AUTHORIZED_USERS list in the bot code.`);
     return;
   }
-
   if (text === '/adduser') {
     if (!hasPermission(userId, 'admin')) {
-      await bot.sendMessage(chatId, '❌ Only admins can add users.');
+      await safeSendMessage(chatId, '❌ Only admins can add users.');
       return;
     }
-
-    await bot.sendMessage(chatId, `👥 **Add User Command**\n\nTo add a new user, send their user ID in this format:\n\`adduser USER_ID ROLE\`\n\n**Roles:**\n• \`content_manager\` - Can manage content\n• \`admin\` - Full access\n\n**Example:**\n\`adduser 123456789 content_manager\``, { parse_mode: 'Markdown' });
+    const addUserMsg = `👥 Add User Command\n\nTo add a new user, send their user ID in this format:\nadduser USER_ID ROLE\n\nRoles:\n• content_manager - Can manage content\n• admin - Full access\n\nExample:\nadduser 123456789 content_manager`;
+    await safeSendMessage(chatId, addUserMsg, 'Markdown');
     return;
   }
-
   if (text === '/cancel') {
     const state = getConversationState(userId);
     if (state) {
       clearConversationState(userId);
-      await bot.sendMessage(chatId, '✅ **Process cancelled!**\n\nYour PDF upload has been cancelled. You can start over by sending a new PDF file.', { parse_mode: 'Markdown' });
+      await safeSendMessage(chatId, '✅ Process cancelled!\n\nYour PDF upload has been cancelled. You can start over by sending a new PDF file.', 'Markdown');
     } else {
-      await bot.sendMessage(chatId, '📝 No active process to cancel. Send a PDF file to start uploading content.');
+      await safeSendMessage(chatId, '📝 No active process to cancel. Send a PDF file to start uploading content.');
     }
     return;
   }
-
-  // Handle adduser command with parameters
   if (text.startsWith('adduser ')) {
     if (!hasPermission(userId, 'admin')) {
-      await bot.sendMessage(chatId, '❌ Only admins can add users.');
+      await safeSendMessage(chatId, '❌ Only admins can add users.');
       return;
     }
-
     const parts = text.split(' ');
     if (parts.length !== 3) {
-      await bot.sendMessage(chatId, '❌ Invalid format. Use: `adduser USER_ID ROLE`', { parse_mode: 'Markdown' });
+      await safeSendMessage(chatId, '❌ Invalid format. Use: adduser USER_ID ROLE', 'Markdown');
       return;
     }
-
     const [command, newUserId, role] = parts;
-
     if (!['content_manager', 'admin'].includes(role)) {
-      await bot.sendMessage(chatId, '❌ Invalid role. Use: `content_manager` or `admin`', { parse_mode: 'Markdown' });
+      await safeSendMessage(chatId, '❌ Invalid role. Use: content_manager or admin', 'Markdown');
       return;
     }
-
     // Note: This is a runtime addition - will be lost on redeploy
     // For permanent changes, update the code directly
     AUTHORIZED_USERS[newUserId] = role;
-    await bot.sendMessage(chatId, `✅ User ${newUserId} added with role: ${role}\n\n⚠️ **Note:** This change is temporary. Update the code for permanent access.`, { parse_mode: 'Markdown' });
+    await safeSendMessage(chatId, `✅ User ${newUserId} added with role: ${role}\n\n⚠️ Note: This change is temporary. Update the code for permanent access.`, 'Markdown');
     return;
   }
-  
   // Handle conversation steps first
   if (await processConversationStep(userId, text, chatId)) {
     return;
   }
-
   // Handle other text as potential responses to prompts
-  await bot.sendMessage(chatId, '💡 Send a PDF file to add new student work, or use /help for commands.');
+  await safeSendMessage(chatId, '� Send a PDF file to add new student work, or use /help for commands.');
 }
 
-// Handle photo uploads (thumbnails)
+// Handle document messages
+// Handle photo messages
 async function handlePhoto(msg) {
   const chatId = msg.chat.id;
   const userId = msg.from.id;
-
-  if (!isAuthorized(userId)) {
-    await bot.sendMessage(chatId, '❌ You are not authorized to use this bot.');
+  const photos = msg.photo;
+  if (!photos || !Array.isArray(photos) || photos.length === 0) {
+    await safeSendMessage(chatId, '❌ No photo found in the message.');
     return;
   }
-
-  const state = getConversationState(userId);
-  if (!state || state.step !== 'waiting_for_thumbnail_or_done') {
-    await bot.sendMessage(chatId, '📸 Please send a PDF first, then I can accept thumbnail images.');
-    return;
-  }
-
+  // Get the highest resolution photo
+  const photo = photos[photos.length - 1];
   try {
-    const photo = msg.photo[msg.photo.length - 1]; // Get the highest resolution photo
+    await safeSendMessage(chatId, '📸 Processing thumbnail image...');
     const fileLink = await bot.getFileLink(photo.file_id);
     const response = await fetch(fileLink);
-
     if (!response.ok) {
       throw new Error(`Failed to download photo: ${response.status} ${response.statusText}`);
     }
-
     const arrayBuffer = await response.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-
-    // Generate thumbnail filename
-    const thumbnailFileName = `${state.pdfFileName.replace('.pdf', '')}-thumbnail.jpg`;
-
-    // Upload thumbnail to public bucket
-    await uploadFile(buffer, thumbnailFileName, BUCKET_THUMBNAILS, 'image/jpeg');
-
-    // Update Firestore with thumbnail URL
-    const showcaseQuery = await firestore.collection('showcase')
-      .where('pdfFileName', '==', state.pdfFileName)
-      .limit(1)
-      .get();
-
-    if (!showcaseQuery.empty) {
-      const docRef = showcaseQuery.docs[0].ref;
-      await docRef.update({
-        thumbnailUrl: `/thumbnails/${thumbnailFileName}`,
-        updatedAt: Firestore.Timestamp.now()
-      });
+    const timestamp = Date.now();
+    const fileName = `${timestamp}-thumbnail.jpg`;
+    const thumbnailUrl = await uploadFile(buffer, fileName, BUCKET_THUMBNAILS, 'image/jpeg');
+    // Update conversation state if active
+    const state = getConversationState(userId);
+    if (state) {
+      state.data.thumbnailUrl = thumbnailUrl;
+      await safeSendMessage(chatId, '✅ Thumbnail uploaded and linked to your showcase item!');
+      await safeSendMessage(chatId, '🎉 All done! Your student work is now live on the website.', 'Markdown');
+      clearConversationState(userId);
+    } else {
+      await safeSendMessage(chatId, '✅ Thumbnail uploaded!');
     }
-
-    clearConversationState(userId);
-    await bot.sendMessage(chatId, '✅ Thumbnail uploaded successfully!');
-    await bot.sendMessage(chatId, '🎉 Your student work is now complete and live on the website!');
-
   } catch (error) {
     console.error('Error handling photo:', error);
-    await bot.sendMessage(chatId, '❌ Error processing thumbnail. Please try again.');
+    await safeSendMessage(chatId, `❌ Error processing photo: ${sanitizeMarkdown(error.message)}. Please try again.`);
   }
 }
-
-// Handle document uploads (PDFs)
 async function handleDocument(msg) {
   const chatId = msg.chat.id;
   const userId = msg.from.id;
-  
-  if (!isAuthorized(userId)) {
-    await bot.sendMessage(chatId, '❌ You are not authorized to use this bot.');
-    return;
-  }
-  
   const document = msg.document;
-  
-  if (!document.mime_type || !document.mime_type.includes('pdf')) {
-    await bot.sendMessage(chatId, '❌ Please send a PDF file.');
-    return;
-  }
-  
   try {
     console.log('📄 Processing PDF for user:', userId);
     console.log('Document info:', {
@@ -503,7 +412,7 @@ async function handleDocument(msg) {
       file_id: document.file_id
     });
 
-    await bot.sendMessage(chatId, '📄 Processing PDF... Please wait.');
+    await safeSendMessage(chatId, '📄 Processing PDF... Please wait.');
 
     // Download the file
     console.log('Getting file link...');
@@ -532,9 +441,9 @@ async function handleDocument(msg) {
     const pdfUrl = await uploadFile(buffer, fileName, BUCKET_PDFS, 'application/pdf');
     console.log('Upload successful, URL:', pdfUrl);
 
-    await bot.sendMessage(chatId, '✅ PDF uploaded successfully!');
-    await bot.sendMessage(chatId, `📁 File: ${fileName}`);
-    await bot.sendMessage(chatId, '📝 Now please provide the title of the work:');
+    await safeSendMessage(chatId, '✅ PDF uploaded successfully!');
+    await safeSendMessage(chatId, `📁 File: ${sanitizeMarkdown(fileName)}`);
+    await safeSendMessage(chatId, '📝 Now please provide the title of the work:');
 
     // Initialize conversation state
     initConversationState(userId, fileName);
@@ -543,7 +452,7 @@ async function handleDocument(msg) {
   } catch (error) {
     console.error('Error handling document:', error);
     console.error('Error stack:', error.stack);
-    await bot.sendMessage(chatId, `❌ Error processing PDF: ${error.message}. Please try again.`);
+    await safeSendMessage(chatId, `❌ Error processing PDF: ${sanitizeMarkdown(error.message)}. Please try again.`);
   }
 }
 
@@ -568,10 +477,11 @@ exports.telegramShowcaseBot = async (req, res) => {
       } else if (msg.photo) {
         await handlePhoto(msg);
       } else if (msg.voice) {
-        // TODO: Handle voice messages for accessibility
-        await bot.sendMessage(msg.chat.id, '🎤 Voice message received! Voice-to-text feature coming soon.');
+    // TODO: Handle voice messages for accessibility
+    // When implementing voice-to-text, sanitize user-generated content before sending.
+    await safeSendMessage(msg.chat.id, '🎤 Voice message received! Voice-to-text feature coming soon.');
       } else {
-        await bot.sendMessage(msg.chat.id, '💡 Send a PDF file to add student work, or use /help for commands.');
+        await safeSendMessage(msg.chat.id, '🤖 Sorry, I did not recognize that message type. Please send a PDF file, photo, or use /help for commands.');
       }
     }
     

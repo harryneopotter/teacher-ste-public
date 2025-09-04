@@ -1,3 +1,12 @@
+# Tanya English Teacher Showcase Bot
+
+## Important Environment Note
+
+**Google Cloud SDK is NOT installed locally. All Google Cloud commands (gcloud, gsutil, etc.) must be run from the Google Cloud Shell.**
+
+This applies to deployment, credential setup, bucket/file management, and any GCP resource operations. Do not attempt to run GCP CLI commands from your local machine unless you have installed and configured the SDK.
+
+For troubleshooting and onboarding, see `docs/deployment-notes.md` for more details.
 # 🎨 Tanya's Creative Writing Program
 
 Welcome to Tanya Kaushik's Creative Writing Program website! This beautiful, modern platform connects young writers with an experienced creative writing teacher through an engaging online experience.

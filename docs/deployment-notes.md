@@ -1,3 +1,18 @@
+# Deployment Notes
+
+## Environment Setup
+
+**Google Cloud SDK is NOT installed locally. All GCP commands must be run from the Google Cloud Shell.**
+
+This includes:
+- Deploying Cloud Functions
+- Managing Firestore, Storage, and Secret Manager
+- Setting up credentials and service accounts
+- Running `gcloud`, `gsutil`, and related CLI tools
+
+If you attempt to run these commands locally without the SDK, you will encounter errors such as missing credentials or project ID. Always use the Cloud Shell for GCP operations.
+
+For local testing, you may use Node.js scripts, but all cloud resource management must be done in the cloud shell.
 # Deployment Notes & Action Items
 
 ## Important Setup Information
