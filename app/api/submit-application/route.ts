@@ -17,6 +17,29 @@ if (!getApps().length) {
 
 const db = getFirestore();
 
+// Rate limiting: in-memory store (use Firestore for production)
+const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT = 5; // 5 requests per hour
+const RATE_LIMIT_WINDOW = 60 * 60 * 1000; // 1 hour in ms
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const record = rateLimitStore.get(ip);
+  
+  if (!record || now > record.resetTime) {
+    // First request or window expired
+    rateLimitStore.set(ip, { count: 1, resetTime: now + RATE_LIMIT_WINDOW });
+    return true;
+  }
+  
+  if (record.count >= RATE_LIMIT) {
+    return false; // Rate limit exceeded
+  }
+  
+  record.count++;
+  return true;
+}
+
 // Verify CAPTCHA token with Google reCAPTCHA
 async function verifyCaptcha(token: string): Promise<boolean> {
   try {
@@ -64,41 +87,56 @@ async function sendTelegramNotification(applicationData: FirestoreApplicationDat
       return;
     }
 
-    // Get admin user ID (you'll need to replace this with the actual user ID)
+    // Get user IDs
     const adminUserId = process.env.TELEGRAM_ADMIN_USER_ID || '41661658';
+    const teacherUserId = process.env.TELEGRAM_TEACHER_USER_ID;
 
-    const message = `
-📋 **New Application Received!**
+    // Sanitize for MarkdownV2
+    const sanitizeMarkdown = (text: string) => text.replace(/[*_\[\]()~`>#+=|{}.!-]/g, match => '\\' + match);
 
-👤 **Student:** ${applicationData.studentName}
-📚 **Grade:** ${applicationData.grade}
-📞 **Phone:** ${applicationData.phoneNumber}
-🎓 **Program:** ${applicationData.program}
-💬 **Comments:** ${applicationData.comments || 'None'}
+    // Teacher message (concise, with phone highlighted)
+    if (teacherUserId) {
+      const teacherMessage = `📞 New application: ${sanitizeMarkdown(applicationData.studentName)} \\- ${sanitizeMarkdown(applicationData.phoneNumber)}`;
+      
+      await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: teacherUserId,
+          text: teacherMessage,
+          parse_mode: 'MarkdownV2',
+        }),
+      });
+    }
+
+    // Admin message (technical details)
+    const adminMessage = `
+📋 **New Application Received\\!**
+
+👤 **Student:** ${sanitizeMarkdown(applicationData.studentName)}
+📚 **Grade:** ${sanitizeMarkdown(applicationData.grade)}
+📞 **Phone:** ${sanitizeMarkdown(applicationData.phoneNumber)}
+🎓 **Program:** ${sanitizeMarkdown(applicationData.program)}
+💬 **Comments:** ${sanitizeMarkdown(applicationData.comments || 'None')}
 
 📅 **Submitted:** ${new Date().toLocaleString()}
 🆔 **Application ID:** ${applicationId}
+🌐 **IP:** ${applicationData.ipAddress}
+✅ **CAPTCHA:** ${applicationData.captchaVerified ? 'Verified' : 'Not verified'}
+📊 **Status:** ${applicationData.status}
     `;
 
-    const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
-
-    const response = await fetch(telegramUrl, {
+    await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         chat_id: adminUserId,
-        text: message,
-        parse_mode: 'Markdown',
+        text: adminMessage,
+        parse_mode: 'MarkdownV2',
       }),
     });
 
-    if (!response.ok) {
-      throw new Error(`Telegram API error: ${response.status}`);
-    }
-
-    console.log('Telegram notification sent successfully');
+    console.log('Telegram notifications sent successfully');
   } catch (error) {
     console.error('Error sending Telegram notification:', error);
     throw error;
@@ -159,6 +197,14 @@ export async function POST(request: NextRequest) {
     const clientIP = request.headers.get('x-forwarded-for') || 
                     request.headers.get('x-real-ip') || 
                     'unknown';
+
+    // Check rate limit
+    if (!checkRateLimit(clientIP)) {
+      return NextResponse.json(
+        { success: false, message: 'Too many requests. Please try again later.' },
+        { status: 429 }
+      );
+    }
 
     // Save application to Firestore
     const applicationData = {

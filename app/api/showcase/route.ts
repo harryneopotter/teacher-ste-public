@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { initializeApp, getApps } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
+import { Storage } from '@google-cloud/storage';
 
 // Initialize Firebase Admin (only once)
 if (!getApps().length) {
@@ -16,6 +17,7 @@ if (!getApps().length) {
 }
 
 const db = getFirestore();
+const storage = new Storage();
 
 export async function GET() {
   try {
@@ -26,12 +28,33 @@ export async function GET() {
       .orderBy('createdAt', 'desc')
       .get();
 
-    const collections = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-      // Convert Firestore timestamps to strings
-      createdAt: doc.data().createdAt?.toDate?.()?.toISOString() || new Date().toISOString(),
-      updatedAt: doc.data().updatedAt?.toDate?.()?.toISOString() || new Date().toISOString(),
+    const collections = await Promise.all(snapshot.docs.map(async doc => {
+      const data = doc.data();
+      let pdfUrl = data.pdfUrl; // fallback
+      
+      // Generate signed URL if pdfObjectName exists
+      if (data.pdfObjectName) {
+        try {
+          const file = storage.bucket('tanya-showcase-pdfs-private').file(data.pdfObjectName);
+          const [signedUrl] = await file.getSignedUrl({
+            version: 'v4',
+            action: 'read',
+            expires: Date.now() + 24 * 60 * 60 * 1000, // 24 hours
+          });
+          pdfUrl = signedUrl;
+        } catch (error) {
+          console.error('Error generating signed URL for', data.pdfObjectName, error);
+        }
+      }
+      
+      return {
+        id: doc.id,
+        ...data,
+        pdfUrl,
+        // Convert Firestore timestamps to strings
+        createdAt: data.createdAt?.toDate?.()?.toISOString() || new Date().toISOString(),
+        updatedAt: data.updatedAt?.toDate?.()?.toISOString() || new Date().toISOString(),
+      };
     }));
 
     return NextResponse.json({

@@ -103,6 +103,8 @@ export default function Home() {
     comments: ''
   })
   
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitMessage, setSubmitMessage] = useState('')
   const [isMobile, setIsMobile] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   
@@ -117,14 +119,60 @@ export default function Home() {
     checkMobile()
     window.addEventListener('resize', checkMobile)
     
+    // Load reCAPTCHA script
+    if (typeof window !== 'undefined' && !(window as any).grecaptcha) {
+      const script = document.createElement('script');
+      script.src = `https://www.google.com/recaptcha/api.js?render=YOUR_RECAPTCHA_SITE_KEY`;
+      script.async = true;
+      document.head.appendChild(script);
+    }
+    
     return () => window.removeEventListener('resize', checkMobile)
   }, []) // studentWorks is not used in this effect, so no dependency needed
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('Form submitted:', formData)
-    // Here you would typically send the data to your backend
-    alert('Application submitted! Tanya will contact you soon.')
+    setIsSubmitting(true)
+    setSubmitMessage('')
+
+    try {
+      // Get reCAPTCHA token
+      const captchaToken = await new Promise<string>((resolve, reject) => {
+        if (typeof window !== 'undefined' && (window as any).grecaptcha) {
+          (window as any).grecaptcha.ready(() => {
+            (window as any).grecaptcha.execute('YOUR_RECAPTCHA_SITE_KEY', { action: 'submit' }).then(resolve).catch(reject);
+          });
+        } else {
+          reject(new Error('reCAPTCHA not loaded'));
+        }
+      });
+
+      // Submit form data
+      const response = await fetch('/api/submit-application', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          captchaToken,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        setSubmitMessage('Application submitted successfully! Tanya will contact you soon.');
+        setFormData({ name: '', grade: '', phone: '', program: '', comments: '' });
+      } else {
+        setSubmitMessage(result.message || 'Failed to submit application. Please try again.');
+      }
+    } catch (error) {
+      console.error('Submit error:', error);
+      setSubmitMessage('An error occurred. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   const studentWorks = [
@@ -567,11 +615,22 @@ export default function Home() {
                 <div className="flex justify-center pt-6">
                   <Button 
                     type="submit" 
-                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-full text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300"
+                    disabled={isSubmitting}
+                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-full text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50"
                   >
-                    Submit Application
+                    {isSubmitting ? 'Submitting...' : 'Submit Application'}
                   </Button>
                 </div>
+                
+                {submitMessage && (
+                  <div className={`mt-4 p-4 rounded-lg text-center ${
+                    submitMessage.includes('successfully') 
+                      ? 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-200' 
+                      : 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-200'
+                  } transition-colors duration-300`}>
+                    {submitMessage}
+                  </div>
+                )}
               </form>
             </CardContent>
           </Card>

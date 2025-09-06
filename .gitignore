@@ -53,7 +53,7 @@ sqlite_mcp_server.db
 server.log
 
 # GCP config files that should stay local only
-cors-config.json
+# cors-config.json
 
 # Project status files (already in remote, but ignore future changes)
 FIXES_APPLIED.md

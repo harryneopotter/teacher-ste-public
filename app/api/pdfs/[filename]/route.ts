@@ -1,31 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { readFileSync, existsSync } from 'fs';
-import { join } from 'path';
+import { Storage } from '@google-cloud/storage';
+
+const storage = new Storage();
+const BUCKET_PDFS = 'tanya-showcase-pdfs-private';
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ filename: string }> }
 ) {
   const { filename } = await params;
+  
   try {
-    const filePath = join(process.cwd(), 'public', 'pdfs', filename);
-    
-    if (!existsSync(filePath)) {
-      return new NextResponse('PDF not found', { status: 404 });
+    if (!filename) {
+      return NextResponse.json({ error: 'Filename is required' }, { status: 400 });
     }
-    
-    const fileBuffer = readFileSync(filePath);
-    
-    return new NextResponse(fileBuffer, {
-      headers: {
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': `inline; filename="${filename}"`,
-        'Cache-Control': 'public, max-age=31536000, immutable',
-      },
+
+    // Generate signed URL for the PDF
+    const file = storage.bucket(BUCKET_PDFS).file(filename);
+    const [signedUrl] = await file.getSignedUrl({
+      version: 'v4',
+      action: 'read',
+      expires: Date.now() + 60 * 60 * 1000, // 1 hour
     });
+
+    // Redirect to the signed URL
+    return NextResponse.redirect(signedUrl, { status: 302 });
     
   } catch (error) {
-    console.error('Error serving PDF:', error);
-    return new NextResponse('Error serving PDF', { status: 500 });
+    console.error('Error generating signed URL for PDF:', error);
+    return NextResponse.json({ error: 'Failed to generate PDF URL' }, { status: 500 });
   }
 }

@@ -93,3 +93,81 @@ gsutil cors set cors-config.json gs://tanya-showcase-thumbnails-public
 - **Bot Username**: (From @BotFather when bot was created)
 
 Would you like me to proceed with creating the bot code and API endpoints while we wait for the deployment?
+
+---
+
+## P1 Infrastructure Setup (Required for Production)
+
+### Secret Manager Configuration
+```bash
+# Create secrets (if not already done)
+gcloud secrets create telegram-bot-token --data-file=/dev/stdin <<< "YOUR_BOT_TOKEN"
+gcloud secrets create gemini-api-key --data-file=/dev/stdin <<< "YOUR_GEMINI_KEY"
+
+# Grant function service account access
+gcloud secrets add-iam-policy-binding telegram-bot-token \
+  --member="serviceAccount:PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
+  --role="roles/secretmanager.secretAccessor"
+
+gcloud secrets add-iam-policy-binding gemini-api-key \
+  --member="serviceAccount:PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
+  --role="roles/secretmanager.secretAccessor"
+```
+
+### Cloud Run Environment Variables
+Set these in Cloud Run service configuration:
+- `TELEGRAM_BOT_TOKEN` → Secret Manager reference
+- `TELEGRAM_ADMIN_USER_ID` → Your Telegram user ID
+- `TELEGRAM_TEACHER_USER_ID` → Tanya's Telegram user ID
+- `RECAPTCHA_SECRET_KEY` → reCAPTCHA secret key
+- `GOOGLE_CLOUD_PROJECT` → `driven-bison-470218-v3`
+
+### Storage Bucket Setup
+```bash
+# Create private PDFs bucket
+gsutil mb -p driven-bison-470218-v3 gs://tanya-showcase-pdfs-private
+
+# Create public thumbnails bucket
+gsutil mb -p driven-bison-470218-v3 gs://tanya-showcase-thumbnails-public
+gsutil iam ch allUsers:objectViewer gs://tanya-showcase-thumbnails-public
+
+# Set CORS for thumbnails bucket
+gsutil cors set cors-config.json gs://tanya-showcase-thumbnails-public
+```
+
+### IAM Roles for Function Service Account
+```bash
+# Get your project number
+PROJECT_NUMBER=$(gcloud projects describe driven-bison-470218-v3 --format="value(projectNumber)")
+
+# Grant necessary roles to function service account
+gcloud projects add-iam-policy-binding driven-bison-470218-v3 \
+  --member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
+  --role="roles/datastore.user"
+
+gcloud projects add-iam-policy-binding driven-bison-470218-v3 \
+  --member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
+  --role="roles/storage.objectAdmin"
+```
+
+### Webhook Setup
+```bash
+# Set webhook URL (replace with your actual function URL)
+gcloud functions describe telegram-showcase-bot --format="value(httpsTrigger.url)"
+
+# Set webhook with secret token
+curl -X POST "https://api.telegram.org/bot<YOUR_BOT_TOKEN>/setWebhook" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "YOUR_FUNCTION_URL",
+    "secret_token": "your_webhook_secret_token"
+  }'
+```
+
+### Verification Steps
+- ✅ Secrets created and accessible
+- ✅ Environment variables configured
+- ✅ Buckets created with correct permissions
+- ✅ IAM roles assigned
+- ✅ Webhook configured with secret token
+- ✅ Function redeployed with new configuration
