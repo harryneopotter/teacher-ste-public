@@ -1,6 +1,16 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+
+// Extend Window interface for grecaptcha
+declare global {
+  interface Window {
+    grecaptcha?: {
+      ready: (cb: () => void) => void;
+      execute: (siteKey: string, options: { action: string }) => Promise<string>;
+    };
+  }
+}
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -110,7 +120,7 @@ export default function Home() {
   
   useEffect(() => {
     const checkMobile = () => {
-      const userAgent = navigator.userAgent || navigator.vendor || (window as unknown as { opera?: string }).opera || ''
+      const userAgent = navigator.userAgent || navigator.vendor || (window as { opera?: string }).opera || ''
       const isMobileDevice = /android|blackberry|iemobile|ipad|iphone|ipod|opera mini|webos/i.test(userAgent)
       const isSmallScreen = window.innerWidth < 768
       setIsMobile(isMobileDevice || isSmallScreen)
@@ -120,7 +130,7 @@ export default function Home() {
     window.addEventListener('resize', checkMobile)
     
     // Load reCAPTCHA script
-    if (typeof window !== 'undefined' && !(window as any).grecaptcha) {
+    if (typeof window !== 'undefined' && !window.grecaptcha) {
       const script = document.createElement('script');
       script.src = `https://www.google.com/recaptcha/api.js?render=YOUR_RECAPTCHA_SITE_KEY`;
       script.async = true;
@@ -138,9 +148,9 @@ export default function Home() {
     try {
       // Get reCAPTCHA token
       const captchaToken = await new Promise<string>((resolve, reject) => {
-        if (typeof window !== 'undefined' && (window as any).grecaptcha) {
-          (window as any).grecaptcha.ready(() => {
-            (window as any).grecaptcha.execute('YOUR_RECAPTCHA_SITE_KEY', { action: 'submit' }).then(resolve).catch(reject);
+        if (typeof window !== 'undefined' && window.grecaptcha) {
+          window.grecaptcha.ready(() => {
+            window.grecaptcha!.execute('YOUR_RECAPTCHA_SITE_KEY', { action: 'submit' }).then(resolve).catch(reject);
           });
         } else {
           reject(new Error('reCAPTCHA not loaded'));
