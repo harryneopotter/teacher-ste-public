@@ -13,17 +13,17 @@ const storage = new Storage();
 const secretClient = new SecretManagerServiceClient();
 
 const USE_LOCAL_STORE = process.env.USE_LOCAL_STORE === '1';
-const LOCAL_STORE_DIR = process.env.LOCAL_STORE_DIR || path.join(os.tmpdir(), 'tanya_bot_store');
+const LOCAL_STORE_DIR = process.env.LOCAL_STORE_DIR || path.join(os.tmpdir(), 'showcase_bot_store');
 
-// Configuration
-const PROJECT_ID = process.env.GOOGLE_CLOUD_PROJECT || process.env.PROJECT_ID || 'your-project-id';
-const BUCKET_PDFS = process.env.BUCKET_PDFS || 'your-pdfs-bucket';
-const BUCKET_THUMBNAILS = process.env.BUCKET_THUMBNAILS || 'your-thumbnails-bucket';
+// Configuration (use environment variables; fallbacks are neutral placeholders)
+const PROJECT_ID = process.env.GOOGLE_CLOUD_PROJECT || process.env.PROJECT_ID || 'project-id-placeholder';
+const BUCKET_PDFS = process.env.BUCKET_PDFS || 'pdfs-bucket-placeholder';
+const BUCKET_THUMBNAILS = process.env.BUCKET_THUMBNAILS || 'thumbnails-bucket-placeholder';
 
 // Authorized users with roles (can be moved to Firestore or env vars)
 const AUTHORIZED_USERS = {
-  [process.env.ADMIN_USER_ID || '41661658']: 'admin',     // You (Developer) - Full access
-  [process.env.CONTENT_MANAGER_USER_ID || '6091959839']: 'content_manager', // Tanya - Content management only
+  [process.env.ADMIN_USER_ID || '00000000']: 'admin',     // Admin (set TELEGRAM_ADMIN_USER_ID in env)
+  [process.env.CONTENT_MANAGER_USER_ID || '00000000']: 'content_manager', // Content manager (set TELEGRAM_CONTENT_MANAGER_USER_ID in env)
 };
 
 let bot;
@@ -470,12 +470,12 @@ async function handleTextMessage(msg) {
 
   // Command handling (unnested)
   if (text === '/start') {
-    const welcomeMessage = `🎨 Tanya's Showcase Bot\n\nWelcome! This bot helps you manage student showcase content.\n\nYour Role: ${sanitizeMarkdown(getUserRole(userId) || 'Not authorized')}\n\nCommands:\n📝 Send a PDF file to add a new student work\n📋 /list - View all showcase items\n🔍 /status - Check bot status and your role\n👤 /userid - Get your Telegram user ID\n❌ /cancel - Cancel current PDF upload process\n❓ /help - Show this help message\n\nAdmin Commands:\n👥 /adduser - Add new users (admin only)\n\nHow to add content:\n1. Send a PDF file (max 20MB)\n2. I'll ask for title, author, and description\n3. Optionally send a thumbnail image\n4. Content goes live automatically!\n\nTips:\n• Use /cancel to stop the process anytime\n• Processing may take up to 9 minutes for large files\n• All PDFs are stored securely with signed URLs`;
+    const welcomeMessage = `🎨 Showcase Bot\n\nWelcome! This bot helps you manage student showcase content.\n\nYour Role: ${sanitizeMarkdown(getUserRole(userId) || 'Not authorized')}\n\nCommands:\n📝 Send a PDF file to add a new student work\n📋 /list - View all showcase items\n🔍 /status - Check bot status and your role\n👤 /userid - Get your Telegram user ID\n❌ /cancel - Cancel current PDF upload process\n❓ /help - Show this help message\n\nAdmin Commands:\n👥 /adduser - Add new users (admin only)\n\nHow to add content:\n1. Send a PDF file (max 20MB)\n2. I'll ask for title, author, and description\n3. Optionally send a thumbnail image\n4. Content goes live automatically!\n\nTips:\n• Use /cancel to stop the process anytime\n• Processing may take up to 9 minutes for large files\n• All PDFs are stored securely with signed URLs`;
     await safeSendMessage(chatId, welcomeMessage, 'Markdown');
     return;
   }
   if (text === '/help') {
-    const helpMessage = `📚 Help - Tanya's Showcase Bot\n\nAdding Student Work:\n1. Send a PDF file of the student's work\n2. Follow the prompts to add details\n3. Optionally add a thumbnail image\n\nCommands:\n📋 /list - View all published works\n🔍 /status - Check bot status and your role\n👤 /userid - Get your Telegram user ID\n❌ /cancel - Cancel current PDF upload process\n❓ /help - Show this help\n\nPDF Upload Limits:\n📄 Max size: 20MB (Telegram limit)\n⏱️  Processing timeout: 9 minutes\n💾 Memory: 512MB available\n\nAdmin Commands:\n👥 /adduser - Add new users (admin only)\n\nTips:\n• Use voice messages for descriptions (accessibility feature)\n• AI will help improve descriptions\n• All PDFs are private with signed URLs\n• Thumbnails are public for fast loading`;
+    const helpMessage = `📚 Help - Showcase Bot\n\nAdding Student Work:\n1. Send a PDF file of the student's work\n2. Follow the prompts to add details\n3. Optionally add a thumbnail image\n\nCommands:\n📋 /list - View all published works\n🔍 /status - Check bot status and your role\n👤 /userid - Get your Telegram user ID\n❌ /cancel - Cancel current PDF upload process\n❓ /help - Show this help\n\nPDF Upload Limits:\n📄 Max size: 20MB (Telegram limit)\n⏱️  Processing timeout: 9 minutes\n💾 Memory: 512MB available\n\nAdmin Commands:\n👥 /adduser - Add new users (admin only)\n\nTips:\n• Use voice messages for descriptions (accessibility feature)\n• AI will help improve descriptions\n• All PDFs are private with signed URLs\n• Thumbnails are public for fast loading`;
     await safeSendMessage(chatId, helpMessage, 'Markdown');
     return;
   }
