@@ -16,14 +16,14 @@ const USE_LOCAL_STORE = process.env.USE_LOCAL_STORE === '1';
 const LOCAL_STORE_DIR = process.env.LOCAL_STORE_DIR || path.join(os.tmpdir(), 'tanya_bot_store');
 
 // Configuration
-const PROJECT_ID = process.env.GOOGLE_CLOUD_PROJECT || 'driven-bison-470218-v3';
-const BUCKET_PDFS = 'tanya-showcase-pdfs-private';
-const BUCKET_THUMBNAILS = 'tanya-showcase-thumbnails-public';
+const PROJECT_ID = process.env.GOOGLE_CLOUD_PROJECT || process.env.PROJECT_ID || 'your-project-id';
+const BUCKET_PDFS = process.env.BUCKET_PDFS || 'your-pdfs-bucket';
+const BUCKET_THUMBNAILS = process.env.BUCKET_THUMBNAILS || 'your-thumbnails-bucket';
 
-// Authorized users with roles
+// Authorized users with roles (can be moved to Firestore or env vars)
 const AUTHORIZED_USERS = {
-  '41661658': 'admin',     // You (Developer) - Full access
-  '6091959839': 'content_manager', // Tanya - Content management only
+  [process.env.ADMIN_USER_ID || '41661658']: 'admin',     // You (Developer) - Full access
+  [process.env.CONTENT_MANAGER_USER_ID || '6091959839']: 'content_manager', // Tanya - Content management only
 };
 
 let bot;
@@ -320,11 +320,16 @@ async function uploadFile(buffer, fileName, bucket, contentType) {
 
     console.log('File saved to Cloud Storage');
 
+    let publicUrl = null;
     if (bucket === BUCKET_THUMBNAILS) {
       // Make thumbnail public
       console.log('Making thumbnail public...');
       await file.makePublic();
       console.log('Thumbnail made public');
+      // Store public HTTPS URL
+      publicUrl = `https://storage.googleapis.com/${bucket}/${encodeURIComponent(fileName)}`;
+      console.log('Public thumbnail URL:', publicUrl);
+      return publicUrl;
     }
 
     const gsUrl = `gs://${bucket}/${fileName}`;

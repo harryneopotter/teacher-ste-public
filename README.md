@@ -1,133 +1,109 @@
-# Tanya English Teacher Showcase Bot
+# ✏️ Teacher-Site: Creative Program Website with Telegram-based CMS
 
-## Important Environment Note
-
-**Google Cloud SDK is NOT installed locally. All Google Cloud commands (gcloud, gsutil, etc.) must be run from the Google Cloud Shell.**
-
-This applies to deployment, credential setup, bucket/file management, and any GCP resource operations. Do not attempt to run GCP CLI commands from your local machine unless you have installed and configured the SDK.
-
-For troubleshooting and onboarding, see `docs/deployment-notes.md` for more details.
-# 🎨 Tanya's Creative Writing Program
-
-Welcome to Tanya Kaushik's Creative Writing Program website! This beautiful, modern platform connects young writers with an experienced creative writing teacher through an engaging online experience.
-
-## ✨ What Makes This Special
-
-### 🌟 For Young Writers (Grades 4-7)
-- **Personalized Learning**: Small group classes with individual attention
-- **Creative Exploration**: Poetry, stories, and scripts with different voices and styles
-- **Confidence Building**: Safe space to discover and develop writing skills
-- **Peer Learning**: Share and showcase creative projects with classmates
-
-### 📱 Perfect Mobile Experience
-- **Touch-Friendly Design**: Easy navigation on phones and tablets
-- **Mobile PDF Viewing**: Optimized document viewing for mobile devices
-- **Responsive Layout**: Looks great on any screen size
-- **Fast Loading**: Optimized for mobile networks
-
-### 🤖 Smart Content Management
-- **Telegram Bot Integration**: Manage content directly from your phone
-- **Instant Notifications**: Get alerts when students submit applications
-- **Secure PDF Storage**: Private, signed URLs for document access
-- **Easy Content Upload**: Add student work with simple commands
-
-## 🚀 Key Features
-
-### 📝 Student Showcase
-- **Beautiful Gallery**: Student work displayed in an elegant grid
-- **PDF Integration**: Click to view full documents
-- **Thumbnail Previews**: Quick visual overview of content
-- **Mobile Optimized**: Perfect viewing on any device
-
-### 📞 Contact & Applications
-- **Easy Application Form**: Simple form for class enrollment
-- **Instant Confirmation**: Immediate feedback on submissions
-- **Teacher Notifications**: Tanya gets alerts on her phone
-- **Spam Protection**: Secure form with verification
-
-### 🎨 Design & Experience
-- **Purple Theme**: Beautiful gradient design
-- **Dark Mode**: Comfortable reading in any lighting
-- **Smooth Animations**: Engaging user interactions
-- **Accessibility**: Screen reader friendly
-
-## 📚 Program Details
-
-### 🎯 Who It's For
-- **Grades 4-7** (Ages 9-12)
-- **Small Groups**: Maximum personal attention
-- **Online Classes**: 2 sessions per week, 60 minutes each
-- **Experienced Teacher**: Led by Tanya Kaushik
-
-### 📖 What Students Learn
-- **Creative Writing Techniques**: Poetry, stories, and scripts
-- **Voice Development**: Finding your unique writing style
-- **Peer Feedback**: Learning from classmates
-- **Confidence Building**: Safe space to express ideas
-
-## 🛠️ Technology Behind the Scenes
-
-### ⚡ Performance & Security
-- **Fast Loading**: Optimized for quick access
-- **Secure Storage**: Google Cloud Platform hosting
-- **Mobile First**: Designed for phone usage
-- **Modern Stack**: Latest web technologies
-
-### 🤖 Smart Features
-- **Bot Integration**: Telegram bot for content management
-- **Automated Workflows**: Streamlined content publishing
-- **Real-time Updates**: Instant notifications
-- **Error Recovery**: Robust error handling
-
-## 📱 Getting Started
-
-### For Students & Parents
-1. **Visit the Website**: Browse the beautiful showcase
-2. **Fill Application Form**: Easy enrollment process
-3. **Get Started**: Join creative writing classes
-
-### For Tanya (Content Management)
-1. **Use Telegram Bot**: Manage content from your phone
-2. **Receive Notifications**: Get alerts for new applications
-3. **Upload Content**: Add student work easily
-4. **Monitor Progress**: Track student engagement
-
-## 🎉 Why Choose This Program?
-
-### ✨ Unique Advantages
-- **Mobile-Optimized**: Perfect for busy parents and students
-- **Teacher Accessibility**: Tanya can manage everything from her phone
-- **Modern Design**: Engaging, professional appearance
-- **Secure & Reliable**: Enterprise-grade hosting and security
-
-### 💝 Student Benefits
-- **Creative Freedom**: Express yourself without limits
-- **Teacher Support**: Individual attention in small groups
-- **Peer Learning**: Learn from classmates' perspectives
-- **Skill Development**: Build writing confidence and abilities
-
-### 👩‍🏫 Teacher Benefits
-- **Easy Management**: Control everything from your phone
-- **Instant Updates**: Never miss an application
-- **Professional Platform**: Showcase student work beautifully
-- **Time Saving**: Automated workflows reduce administrative work
-
-## 🌟 Success Stories
-
-*"My child went from being shy about writing to confidently sharing their stories with the class!"*
-— Parent of Grade 5 Student
-
-*"The mobile-friendly design makes it so easy to manage everything on the go."*
-— Tanya Kaushik, Creative Writing Teacher
-
-## 📞 Contact Information
-
-**Tanya Kaushik**
-- Creative Writing Program for Grades 4-7
-- Online Classes • Small Groups • Individual Attention
-
-**Ready to unlock your child's creative potential?** Apply today and join our community of young writers!
+A modern, accessibility-first website designed for a creative education program, powered by **Next.js**, **Google Cloud**, and a **Telegram bot interface** for content management. This site enables fast, frictionless updates from a phone — no CMS, no dashboards, no laptops required.
 
 ---
 
-*Built with ❤️ for young writers and their teachers*
+## 🚀 Features
+
+* 📱 **Telegram-first CMS** — Upload showcase content (PDFs, descriptions, images) via Telegram bot
+* 📬 **Real-time lead notifications** — Contact form submissions are sent to Telegram with click-to-call formatting
+* 🧾 **Auto-processed content** — Files are stored, indexed, and published instantly on the live site
+* 🛠️ **Serverless architecture** — Fully managed on GCP with zero-maintenance deployment
+* 🧘 **Accessibility-driven UX** — No login or dashboard required for updates; everything happens from the phone
+
+---
+
+## 🧱 Tech Stack
+
+| Layer        | Technology Used                      |
+| ------------ | ------------------------------------ |
+| Frontend     | Next.js 14 (App Router) + TypeScript |
+| Bot Backend  | Telegram Bot API via Cloud Functions |
+| Hosting      | Google Cloud Run                     |
+| Database     | Firestore (serverless NoSQL)         |
+| File Storage | GCP Cloud Storage (PDFs, thumbnails) |
+| CI/CD        | Cloud Build                          |
+
+---
+
+## 📘 Project Story
+
+This site was built to solve a real-world problem:
+How do you empower someone to run a website **without needing a CMS or a computer**?
+
+The answer: a Telegram-based interface that handles file uploads, descriptions, and instant publishing — all from a phone.
+No dashboards, no logins, no friction.
+
+> 📝 [Read the full Project Story →](./PROJECT_STORY.md)
+
+---
+
+## 🧪 Development Setup
+
+```bash
+# 1. Install dependencies
+npm install
+
+# 2. Set up environment variables
+cp .env.example .env.local
+# Edit .env.local with your actual values
+
+# 3. Run the site locally
+npm run dev
+```
+
+### Environment Variables
+
+The application requires several environment variables for proper functionality. Copy `.env.example` to `.env.local` and configure the following:
+
+#### Required Variables:
+- `GOOGLE_CLOUD_PROJECT` - Your GCP project ID
+- `BUCKET_PDFS` - Cloud Storage bucket for PDF files
+- `BUCKET_THUMBNAILS` - Cloud Storage bucket for thumbnail images
+- `TELEGRAM_BOT_TOKEN` - Bot token from @BotFather
+- `ADMIN_USER_ID` - Telegram user ID of the administrator
+- `CONTENT_MANAGER_USER_ID` - Telegram user ID of the content manager
+- `FIREBASE_SERVICE_ACCOUNT_KEY` - Firebase service account JSON
+
+#### Optional Variables:
+- `ADDITIONAL_IMAGE_DOMAINS` - Comma-separated list of additional image domains
+- `NODE_ENV` - Environment (development/production)
+- `PORT` - Local development port (defaults to 3000)
+
+See `.env.example` for detailed configuration examples.
+
+---
+
+## 📁 Project Structure
+
+```
+/
+├── app/               → Next.js App Router pages
+├── components/        → Reusable UI blocks
+├── lib/               → Cloud services & Firestore logic
+├── public/            → Static assets
+├── styles/            → CSS modules / global styles
+├── functions/telegram-bot/ → Cloud Function for bot logic
+├── firestore.rules    → Firestore access control
+├── Dockerfile         → Cloud Run container config
+└── cloudbuild.yaml    → GCP CI/CD setup
+```
+
+---
+
+## 📜 License
+
+[MIT License](./LICENSE)
+
+---
+
+## 🙋 Want to Reuse This?
+
+This repo is not a generic CMS, but it can serve as a reference for building:
+
+* Phone-first content upload workflows
+* Telegram bots as publishing UIs
+* Serverless, low-maintenance educational platforms
+
+Feel free to adapt or contribute!

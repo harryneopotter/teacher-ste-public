@@ -15,7 +15,11 @@ const nextConfig: NextConfig = {
   
   // Configure images for Cloud Storage
   images: {
-    domains: ['storage.googleapis.com', 'tanya-showcase-thumbnails-public.storage.googleapis.com'],
+    domains: [
+      'storage.googleapis.com',
+      ...(process.env.BUCKET_THUMBNAILS ? [`${process.env.BUCKET_THUMBNAILS}.storage.googleapis.com`] : []),
+      ...(process.env.ADDITIONAL_IMAGE_DOMAINS ? process.env.ADDITIONAL_IMAGE_DOMAINS.split(',') : [])
+    ],
     formats: ['image/webp', 'image/avif'],
     minimumCacheTTL: 60,
     unoptimized: true, // Disable image optimization for Cloud Run

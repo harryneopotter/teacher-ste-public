@@ -48,6 +48,10 @@ migration-timeline-and-procedures.md
 vercel-to-gcp-migration-analysis.md
 current-functionality-baseline.md
 DOCUMENTATION.md
+
+# PDF files and thumbnails (stored in Cloud Storage)
+public/pdfs/
+public/thumbnails/
 Plan/
 sqlite_mcp_server.db
 server.log

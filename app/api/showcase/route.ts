@@ -31,11 +31,13 @@ export async function GET() {
     const collections = await Promise.all(snapshot.docs.map(async doc => {
       const data = doc.data();
       let pdfUrl = data.pdfUrl; // fallback
-      
+      let thumbnailUrl = data.thumbnailUrl;
+
       // Generate signed URL if pdfObjectName exists
       if (data.pdfObjectName) {
         try {
-          const file = storage.bucket('tanya-showcase-pdfs-private').file(data.pdfObjectName);
+          const pdfBucket = process.env.BUCKET_PDFS || 'your-pdfs-bucket';
+          const file = storage.bucket(pdfBucket).file(data.pdfObjectName);
           const [signedUrl] = await file.getSignedUrl({
             version: 'v4',
             action: 'read',
@@ -46,11 +48,23 @@ export async function GET() {
           console.error('Error generating signed URL for', data.pdfObjectName, error);
         }
       }
-      
+
+      // Ensure thumbnailUrl is a public HTTPS URL if possible
+      if (thumbnailUrl && thumbnailUrl.startsWith('gs://')) {
+        // Convert gs://bucket/object to https://storage.googleapis.com/bucket/object
+        const match = thumbnailUrl.match(/^gs:\/\/([^\/]+)\/(.+)$/);
+        if (match) {
+          const bucket = match[1];
+          const object = encodeURIComponent(match[2]);
+          thumbnailUrl = `https://storage.googleapis.com/${bucket}/${object}`;
+        }
+      }
+
       return {
         id: doc.id,
         ...data,
         pdfUrl,
+        thumbnailUrl,
         // Convert Firestore timestamps to strings
         createdAt: data.createdAt?.toDate?.()?.toISOString() || new Date().toISOString(),
         updatedAt: data.updatedAt?.toDate?.()?.toISOString() || new Date().toISOString(),

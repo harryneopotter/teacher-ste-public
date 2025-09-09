@@ -6,9 +6,10 @@ const { Storage } = require('@google-cloud/storage');
 const firestore = new Firestore();
 const storage = new Storage();
 
-const PROJECT_ID = 'driven-bison-470218-v3';
-const BUCKET_PDFS = 'tanya-showcase-pdfs-private';
-const BUCKET_THUMBNAILS = 'tanya-showcase-thumbnails-public';
+// Configuration from environment variables
+const PROJECT_ID = process.env.GOOGLE_CLOUD_PROJECT || 'driven-bison-470218-v3';
+const BUCKET_PDFS = process.env.BUCKET_PDFS || 'tanya-showcase-pdfs-private';
+const BUCKET_THUMBNAILS = process.env.BUCKET_THUMBNAILS || 'tanya-showcase-thumbnails-public';
 
 async function testCloudStorage() {
   try {
