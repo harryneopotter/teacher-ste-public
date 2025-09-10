@@ -1,4 +1,4 @@
-# Tanya's Telegram Showcase Bot
+# Telegram Showcase Bot
 
 A Telegram bot for managing student showcase content with PDF upload, metadata collection, and automatic publishing to the website.
 
@@ -85,7 +85,7 @@ const AUTHORIZED_USERS = {
 
 Set these in your Cloud Function environment:
 ```bash
-GOOGLE_CLOUD_PROJECT=driven-bison-470218-v3
+GOOGLE_CLOUD_PROJECT=your-gcp-project-id
 TELEGRAM_BOT_TOKEN=your_bot_token
 TELEGRAM_ADMIN_USER_ID=your_user_id
 ```
@@ -93,8 +93,8 @@ TELEGRAM_ADMIN_USER_ID=your_user_id
 ### Cloud Storage Buckets
 
 The bot uses these buckets (create them if they don't exist):
-- `tanya-showcase-pdfs-private` - For PDF files
-- `tanya-showcase-thumbnails-public` - For thumbnail images
+- `your-pdfs-bucket-private` - For PDF files
+- `your-thumbnails-bucket-public` - For thumbnail images
 
 ## 📝 Workflow
 
@@ -149,7 +149,7 @@ gcloud functions logs read telegram-showcase-bot --region=us-central1
 The bot automatically receives notifications when:
 - New applications are submitted via the website
 - Form data includes student details and contact info
-- Tanya receives instant Telegram alerts
+- The Teacher receives instant Telegram alerts
 
 ### Content Management
 

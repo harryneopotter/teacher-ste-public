@@ -7,9 +7,9 @@ const firestore = new Firestore();
 const storage = new Storage();
 
 // Configuration from environment variables
-const PROJECT_ID = process.env.GOOGLE_CLOUD_PROJECT || 'driven-bison-470218-v3';
-const BUCKET_PDFS = process.env.BUCKET_PDFS || 'tanya-showcase-pdfs-private';
-const BUCKET_THUMBNAILS = process.env.BUCKET_THUMBNAILS || 'tanya-showcase-thumbnails-public';
+const PROJECT_ID = process.env.GOOGLE_CLOUD_PROJECT || 'your-gcp-project-id';
+const BUCKET_PDFS = process.env.BUCKET_PDFS || 'your-pdfs-bucket-private';
+const BUCKET_THUMBNAILS = process.env.BUCKET_THUMBNAILS || 'your-thumbnails-bucket-public';
 
 async function testCloudStorage() {
   try {
