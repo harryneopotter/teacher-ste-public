@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Storage } from '@google-cloud/storage';
 
 const storage = new Storage();
-const BUCKET_PDFS = 'tanya-showcase-pdfs-private';
+const BUCKET_PDFS = 'your-pdfs-bucket-private';
 
 export async function GET(
   request: NextRequest,

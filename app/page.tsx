@@ -172,7 +172,7 @@ export default function Home() {
       const result = await response.json();
 
       if (response.ok && result.success) {
-        setSubmitMessage('Application submitted successfully! Tanya will contact you soon.');
+        setSubmitMessage('Application submitted successfully! The teacher will contact you soon.');
         setFormData({ name: '', grade: '', phone: '', program: '', comments: '' });
       } else {
         setSubmitMessage(result.message || 'Failed to submit application. Please try again.');
@@ -188,32 +188,32 @@ export default function Home() {
   const studentWorks = [
     {
       id: 1,
-      title: "Fifilldi",
+      title: "Creative Work 1",
       author: "Student Creative Work",
       type: "Creative Writing Collection",
       description: "A comprehensive creative writing collection showcasing imaginative storytelling and creative expression from one of our talented students.",
-      pdfUrl: "/pdfs/Fifilldi.pdf",
-      thumbnailUrl: "/thumbnails/Fifilldi.jpg",
+      pdfUrl: "/pdfs/Creative Work 1.pdf",
+      thumbnailUrl: "/thumbnails/Creative Work 1.jpg",
       publishedDate: "August 2024"
     },
     {
       id: 2,
-      title: "Navedh Poem Portfolio",
-      author: "Navedh",
+      title: "Student 1 Poem Portfolio",
+      author: "Student 1",
       type: "Poetry Collection",
-      description: "A beautiful collection of original poems exploring themes of nature, emotions, and imagination through the unique voice of young Navedh.",
-      pdfUrl: "/pdfs/Navedh poem portfolio.pdf",
-      thumbnailUrl: "/thumbnails/Navedh poem portfolio.jpg",
+      description: "A beautiful collection of original poems exploring themes of nature, emotions, and imagination through the unique voice of young Student 1.",
+      pdfUrl: "/pdfs/Student 1 poem portfolio.pdf",
+      thumbnailUrl: "/thumbnails/Student 1 poem portfolio.jpg",
       publishedDate: "August 2024"
     },
     {
       id: 3,
-      title: "Varenyam Poem Portfolio",
-      author: "Varenyam",
+      title: "Student 2 Poem Portfolio",
+      author: "Student 2",
       type: "Poetry Collection",
-      description: "An inspiring portfolio of poems that showcase Varenyam&apos;s growing confidence in creative expression and poetic voice.",
-      pdfUrl: "/pdfs/Varenyam poem portfolio.pdf",
-      thumbnailUrl: "/thumbnails/Varenyam poem portfolio.jpg",
+      description: "An inspiring portfolio of poems that showcase Student 2&apos;s growing confidence in creative expression and poetic voice.",
+      pdfUrl: "/pdfs/Student 2 poem portfolio.pdf",
+      thumbnailUrl: "/thumbnails/Student 2 poem portfolio.jpg",
       publishedDate: "August 2024"
     }
   ]
@@ -226,12 +226,12 @@ export default function Home() {
           <div className="flex items-center space-x-3 mr-2 pr-2 border-r border-purple-200 dark:border-purple-700">
             <Image
               src="/api/logo"
-              alt="Tanya's Creative Writing Program Logo"
+              alt="The Creative Writing Program Logo"
               width={32}
               height={32}
               className="object-contain w-8 h-8"
             />
-            <span className="text-purple-800 dark:text-purple-200 font-bold text-sm transition-colors">Tanya&apos;s Program</span>
+            <span className="text-purple-800 dark:text-purple-200 font-bold text-sm transition-colors">The Teacher&apos;s Program</span>
           </div>
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
@@ -315,13 +315,13 @@ export default function Home() {
                 <div className="flex items-center space-x-4 mb-6 relative z-10">
                   <Image
                     src="/api/logo"
-                    alt="Tanya's Creative Writing Program Logo"
+                    alt="The Creative Writing Program Logo"
                     width={128}
                     height={128}
                     className="object-contain w-32 h-32"
                   />
                   <div className="text-left">
-                    <h3 className="text-2xl font-bold text-purple-700 dark:text-purple-300 transition-colors duration-300">Tanya Kaushik</h3>
+                    <h3 className="text-2xl font-bold text-purple-700 dark:text-purple-300 transition-colors duration-300">The Teacher</h3>
                     <p className="text-lg text-purple-600 dark:text-purple-400 font-medium transition-colors duration-300">Creative Writing Program</p>
                   </div>
                 </div>
@@ -331,7 +331,7 @@ export default function Home() {
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400"> Story</span>
                 </h1>
                 <p className="text-xl text-gray-600 dark:text-gray-300 mt-6 max-w-2xl transition-colors duration-300">
-                  Welcome to Tanya Kaushik&apos;s Creative Writing Program - where young minds discover the magic of words and the power of imagination.
+                  Welcome to The Teacher&apos;s Creative Writing Program - where young minds discover the magic of words and the power of imagination.
                 </p>
               </div>
             </div>
@@ -355,7 +355,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* About Tanya - Curved Section */}
+      {/* About The Teacher - Curved Section */}
       <section id="about" className="py-20 bg-white dark:bg-gray-900 relative overflow-hidden transition-colors duration-300">
         <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 dark:from-gray-800 dark:via-purple-900/30 dark:to-gray-800 rounded-b-[100px] transition-colors duration-300"></div>
         <div className="max-w-6xl mx-auto px-6 relative z-10">
@@ -365,7 +365,7 @@ export default function Home() {
                 <Heart className="w-4 h-4 text-purple-600 dark:text-purple-400 transition-colors duration-300" />
                 <span className="text-purple-700 dark:text-purple-300 font-medium transition-colors duration-300">Meet Your Teacher</span>
               </div>
-              <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-6 transition-colors duration-300">Tanya Kaushik</h2>
+              <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-6 transition-colors duration-300">The Teacher</h2>
               <p className="text-lg text-gray-600 dark:text-gray-300 mb-6 transition-colors duration-300">
                 An experienced English teacher passionate about nurturing young writers. I believe that every child has a unique voice waiting to be discovered through the magic of creative writing.
               </p>
@@ -391,7 +391,7 @@ export default function Home() {
                   <p className="text-gray-700 dark:text-gray-300 italic text-lg leading-relaxed transition-colors duration-300">
                     &ldquo;Writing is not just about putting words on paper. It&apos;s about discovering who you are, what you think, and how you see the world.&rdquo;
                   </p>
-                  <p className="text-purple-600 dark:text-purple-400 font-semibold mt-4 transition-colors duration-300">- Tanya Kaushik</p>
+                  <p className="text-purple-600 dark:text-purple-400 font-semibold mt-4 transition-colors duration-300">- The Teacher</p>
                 </div>
               </div>
             </div>
@@ -548,7 +548,7 @@ export default function Home() {
           <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-0 shadow-2xl transition-colors duration-300">
             <CardHeader className="text-center">
               <CardTitle className="text-2xl text-gray-800 dark:text-gray-100 transition-colors duration-300">Student Application Form</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-300 transition-colors duration-300">Fill out the form below and Tanya will contact you soon</CardDescription>
+              <CardDescription className="text-gray-600 dark:text-gray-300 transition-colors duration-300">Fill out the form below and The teacher will contact you soon</CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -801,7 +801,7 @@ export default function Home() {
           <div className="text-center">
             <h3 className="text-3xl font-bold mb-4 text-white">Ready to Begin Your Writing Journey?</h3>
             <p className="text-xl text-purple-100 dark:text-purple-200 mb-8 transition-colors duration-300">
-              Contact Tanya Kaushik today and help your child discover the joy of creative writing.
+              Contact The Teacher today and help your child discover the joy of creative writing.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-8">
               <div className="flex items-center space-x-2">

@@ -1,9 +1,9 @@
 [
     {
         "origin": [
-            "https://tanya.hnpart.xyz",
-            "https://tanyasprogram.com",
-            "https://*.tanyasprogram.com",
+            "https://your-app-domain.com",
+            "https://your-program-domain.com",
+            "https://*.your-program-domain.com",
             "http://localhost:3000"
         ],
         "method": [

@@ -1,16 +1,16 @@
 #!/bin/bash
 
-# Manual webhook setup for Tanya's Telegram Bot
+# Manual webhook setup for Telegram Bot
 # Run this if the automatic setup fails
 
-echo "🤖 Tanya's Telegram Bot - Manual Webhook Setup"
+echo "🤖 Telegram Bot - Manual Webhook Setup"
 echo "=============================================="
 
 # Configuration
-PROJECT_ID="${PROJECT_ID:-driven-bison-470218-v3}"
+PROJECT_ID="${PROJECT_ID:-your-gcp-project-id}"
 FUNCTION_NAME="telegram-showcase-bot"
 REGION="${REGION:-us-central1}"
-FUNCTION_URL="https://us-central1-driven-bison-470218-v3.cloudfunctions.net/telegram-showcase-bot"
+FUNCTION_URL="https://us-central1-your-gcp-project-id.cloudfunctions.net/telegram-showcase-bot"
 
 echo "📋 Configuration:"
 echo "   Project: $PROJECT_ID"
@@ -56,7 +56,7 @@ if echo "$RESPONSE" | grep -q '"ok":true'; then
     echo "2. Sending /start"
     echo "3. Sending /userid to get your user ID"
     echo ""
-    echo "👥 To add Tanya as a content manager:"
+    echo "👥 To add The Teacher as a content manager:"
     echo "1. Have her send /userid to the bot"
     echo "2. Add her user ID to the AUTHORIZED_USERS in index.js"
     echo "3. Redeploy the function"

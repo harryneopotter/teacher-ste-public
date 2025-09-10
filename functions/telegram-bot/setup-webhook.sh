@@ -3,7 +3,7 @@
 # Setup Telegram webhook for the deployed Cloud Function
 # Run this in Google Cloud Shell after deploying the function
 
-PROJECT_ID="${PROJECT_ID:-driven-bison-470218-v3}"
+PROJECT_ID="${PROJECT_ID:-your-gcp-project-id}"
 FUNCTION_NAME="telegram-showcase-bot"
 REGION="${REGION:-us-central1}"
 

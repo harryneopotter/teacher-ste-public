@@ -231,7 +231,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: 'Application submitted successfully! Tanya will contact you soon.',
+      message: 'Application submitted successfully! The teacher will contact you soon.',
       applicationId: docRef.id,
     });
 
